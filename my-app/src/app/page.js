@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Slider from "@/components/molecules/Slider/Slider";
 import Start from "@/components/organisms/Start/Start";
 import Continue from "@/components/organisms/Continue/Continue";
