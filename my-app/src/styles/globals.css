@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+@import "tailwindcss";
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+*{
+    box-sizing: border-box;
+}
+.swiper-pagination-bullet {
+    height: 8px!important;
+    width: 57px!important;
+    border-radius: 999px!important;
+    background-color:#F5F5F5!important;
+    opacity: 0.5;
+}
+.swiper-pagination{
+    margin-bottom: 48px!important;
+}
+.swiper-pagination-bullet-active {
+    background-color: #F5F5F5!important;
+}
+.swiper-button-prev{
+    position: absolute!important;
+    padding: 20px;
+    background-color: darkslategray;
+    top: 100px;
+}
+.swiper-button-next{
+    position: absolute!important;
+    padding: 20px;
+    background-color: darkslategray;
+    top: 100px;
+}
