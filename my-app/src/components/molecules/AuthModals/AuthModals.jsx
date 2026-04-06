@@ -1,9 +1,9 @@
 'use client'
 import useAuthStore from '@/store/useAuthStore';
 import LoginModal from '@/components/organisms/LoginModal/LoginModal';
-import CreateModal from '@/components/organisms/CreateModal/CreateModal';
+import SignupModal from "@/components/organisms/SignupModal/SignupModal";
 
-export default function AuthModals() {
+const AuthModals = () => {
     const { isLoginOpen, isSignUpOpen, closeAll, openSignUp, openLogin } = useAuthStore();
 
     return (
@@ -13,7 +13,7 @@ export default function AuthModals() {
                 onClose={closeAll}
                 onSignUpOpen={openSignUp}
             />
-            <CreateModal
+            <SignupModal
                 isOpen={isSignUpOpen}
                 onClose={closeAll}
                 onLoginOpen={openLogin}
@@ -21,3 +21,5 @@ export default function AuthModals() {
         </>
     );
 }
+
+export default AuthModals;

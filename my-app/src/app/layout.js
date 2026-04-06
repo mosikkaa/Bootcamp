@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import Navbar from "@/components/organisms/Navbar/Navbar";
 import Footer from "@/components/organisms/Footer/Footer";
 import AuthModals from "@/components/molecules/AuthModals/AuthModals";
+import Sidebar from "@/components/organisms/Sidebar/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
            {children}
            <Footer/>
            <AuthModals />
+           <Sidebar />
       </body>
     </html>
   );

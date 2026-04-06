@@ -2,7 +2,7 @@
 import Button from '@/components/atoms/Button/Button';
 import useAuthStore from "@/store/useAuthStore";
 
-export default function AuthButtons() {
+const AuthButtons = () => {
     const { openLogin, openSignUp } = useAuthStore();
 
     return (
@@ -12,3 +12,5 @@ export default function AuthButtons() {
             </div>
     );
 }
+
+export default AuthButtons;

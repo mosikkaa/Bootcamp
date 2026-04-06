@@ -2,10 +2,12 @@
 import Link from "next/link";
 
 
-export default function Logo() {
+const Logo = () => {
     return (
         <Link href="/" className="">
             <img className="" src="/Logo.svg" alt="Logo" />
         </Link>
     );
 }
+
+export default Logo;
