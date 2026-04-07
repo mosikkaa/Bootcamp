@@ -11,6 +11,12 @@ export default function Home() {
     const [isOpen,setOpen] = useState(false);
     const [sortBy, setSortBy] = useState("Newest First");
 
+    const courses = [
+        { id: "1" }, { id: "2" }, { id: "3" },
+        { id: "4" }, { id: "5" }, { id: "6" },
+        { id: "7" }, { id: "8" }, { id: "9" },
+    ];
+
 
     return (
         <main className='w-full bg-[#F5F5F5]! flex flex-col px-[177px] gap-[62px] pt-16 pb-20'>
@@ -150,15 +156,9 @@ export default function Home() {
 
                     <div className='grid grid-cols-3 gap-6'>
 
-                        <BrowseCard/>
-                        <BrowseCard/>
-                        <BrowseCard/>
-                        <BrowseCard/>
-                        <BrowseCard/>
-                        <BrowseCard/>
-                        <BrowseCard/>
-                        <BrowseCard/>
-                        <BrowseCard/>
+                        {courses.map((course) => (
+                            <BrowseCard key={course.id} courseId={course.id} />
+                        ))}
 
                     </div>
 
