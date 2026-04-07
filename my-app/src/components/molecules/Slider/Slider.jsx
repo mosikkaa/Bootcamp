@@ -19,13 +19,13 @@ const slides = [
         id: 2,
         title: 'Your second slide title',
         description: 'Your second slide description.',
-        bg: '/hero-bg-2.jpg',
+        bg: '/SliderBG1.png',
     },
     {
         id: 3,
         title: 'Your second slide title',
         description: 'Your second slide description.',
-        bg: '/hero-bg-2.jpg',
+        bg: '/SliderBG1.png',
     }
 ];
 

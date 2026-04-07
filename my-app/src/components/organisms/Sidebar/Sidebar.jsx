@@ -42,24 +42,19 @@ const Sidebar = () => {
     return createPortal(
         <div className='fixed inset-0 z-50 flex justify-end'>
 
-            {/* Backdrop */}
             <div className='absolute inset-0 bg-black/30' onClick={closeSidebar} />
 
-            {/* Sidebar */}
             <div className='relative z-999 w-[460px] h-full bg-white flex flex-col overflow-y-auto'>
 
-                {/* Header */}
                 <div className='flex justify-between items-center px-8 py-6 border-b'>
                     <h2 className='text-2xl font-bold'>Enrolled Courses</h2>
                     <span className='text-sm text-gray-500'>Total Enrollments: {enrolledCourses.length}</span>
                 </div>
 
-                {/* Course List */}
                 <div className='flex flex-col divide-y'>
                     {enrolledCourses.map((course) => (
                         <div key={course.id} className='flex flex-col gap-3 px-8 py-6'>
 
-                            {/* Top row */}
                             <div className='flex gap-4'>
                                 <Image src={course.img} alt={course.title} width={100} height={80} className='rounded-lg object-cover' />
                                 <div className='flex flex-col gap-1'>
@@ -78,7 +73,6 @@ const Sidebar = () => {
                                 </div>
                             </div>
 
-                            {/* Progress + Button */}
                             <div className='flex items-center justify-between gap-4'>
                                 <div className='flex flex-col gap-1 flex-1'>
                                     <span className='text-xs text-gray-500'>{course.progress}% Complete</span>

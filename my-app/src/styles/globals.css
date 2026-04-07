@@ -9,6 +9,9 @@ body {
 *{
     box-sizing: border-box;
 }
+button{
+    cursor: pointer;
+}
 .swiper-pagination-bullet {
     height: 8px!important;
     width: 57px!important;

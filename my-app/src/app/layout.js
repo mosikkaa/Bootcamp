@@ -4,6 +4,7 @@ import Navbar from "@/components/organisms/Navbar/Navbar";
 import Footer from "@/components/organisms/Footer/Footer";
 import AuthModals from "@/components/molecules/AuthModals/AuthModals";
 import Sidebar from "@/components/organisms/Sidebar/Sidebar";
+import QueryProvider from "@/providers/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,11 +25,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full w-full">
-           <Navbar/>
-           {children}
-           <Footer/>
-           <AuthModals />
-           <Sidebar />
+         <QueryProvider>
+              <Navbar/>
+              {children}
+              <Footer/>
+              <AuthModals />
+              <Sidebar />
+         </QueryProvider>
       </body>
     </html>
   );

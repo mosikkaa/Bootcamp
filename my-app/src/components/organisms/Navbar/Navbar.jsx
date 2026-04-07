@@ -4,7 +4,7 @@ import browse_icon from '../../../../public/BrowseIcon.svg'
 import AuthButtons from "@/components/molecules/AuthButtons/AuthButtons";
 
 const navLinks = [
-    { href: '/courses', label: 'Browse Courses', img: browse_icon },
+    { href: '/browse', label: 'Browse Courses', img: browse_icon },
     { label: 'Enroll Courses', img: browse_icon, isSidebar: true },
 ];
 

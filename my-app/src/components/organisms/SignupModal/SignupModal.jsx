@@ -112,7 +112,7 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
                                                 }
                                                 : step.validation
                                         )}
-                                        className='w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500'
+                                        className={`w-full  rounded-lg px-3 py-2 text-sm  ${errors ? 'focus:border-red-500' : 'focus:ring-indigo-500'} ${errors ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                     {attemptedStep === active && errors[step.field] && (
                                         <span className='text-red-500 text-xs'>{errors[step.field].message}</span>
