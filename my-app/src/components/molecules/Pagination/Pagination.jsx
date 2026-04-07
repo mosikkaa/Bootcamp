@@ -14,7 +14,7 @@ const Pagination = ({ totalPages = 10 }) => {
     const handlePageChange = (page) => {
         if (page === "...") return;
         setActivePage(page);
-        
+
         const params = new URLSearchParams();
         params.set("page", page.toString());
         router.push(`${pathname}?${params.toString()}`);
