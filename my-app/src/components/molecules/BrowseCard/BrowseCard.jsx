@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import Rating from "@/components/atoms/Rating/Rating";
+import Button from "@/components/atoms/Button/Button";
 
 const BrowseCard = ({ courseId = "1" }) => {
     return (
@@ -13,17 +15,16 @@ const BrowseCard = ({ courseId = "1" }) => {
                             <span className='w-2 text-[#8A8A8A] font-inter font-medium text-[14px] leading-none tracking-normal'>|</span>
                             <span className='text-[#8A8A8A] font-inter font-medium text-[14px] leading-none tracking-normal'>12 Weeks</span>
                         </div>
-                        <div className='flex gap-1'>
-                            <Image src={'/star.svg'} width={18} height={18} alt={'star'} />
-                            <span>4.9</span>
-                        </div>
+                        <Rating/>
                     </div>
+
                     <h1 className='font-inter font-semibold text-[24px] leading-[100%] tracking-normal text-[#0A0A0A]'>Advanced React & TypeScript Development</h1>
+
                     <div className='flex flex-wrap'>
-                        <button className='flex items-center h-[39px] rounded-[12px] px-[12px] py-[8px] gap-[10px] bg-[#F5F5F5]'>
+                        <Button variant={'browseCard'}>
                             <Image src={'/development_vector.svg'} alt={'development'} width={24} height={24}/>
                             <span>Development</span>
-                        </button>
+                        </Button>
                     </div>
                     <div className='flex justify-between items-center'>
                         <div className='w-[144px] flex flex-col gap-1'>

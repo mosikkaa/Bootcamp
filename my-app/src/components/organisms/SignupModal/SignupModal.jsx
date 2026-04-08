@@ -98,7 +98,7 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
                         <form onSubmit={handleSubmit(onSubmit)} noValidate className='flex flex-col gap-4'>
 
                             {currentFields.map((step) => (
-                                <div key={step.id} className='flex flex-col gap-1'>
+                                <div key={step.field} className='flex flex-col gap-1'>
                                     <label className='text-sm font-medium'>{step.label}</label>
                                     <input type={step.type}
                                         placeholder={step.placeholder}

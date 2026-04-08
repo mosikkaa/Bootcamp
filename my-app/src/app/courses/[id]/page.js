@@ -1,6 +1,8 @@
 'use client'
 import Image from "next/image";
 import {useState} from "react";
+import {LocationV2} from "@/components/atoms/Location/Location";
+import CourseDate from "@/components/atoms/CourseDate/CourseDate";
 
 export default function CoursePage({ params }) {
     const { id } = params;
@@ -13,20 +15,7 @@ export default function CoursePage({ params }) {
 
                 <div className='flex flex-col gap-[32px]'>
 
-                    <div className='flex gap-0.5 items-center'>
-                        <div className='flex gap-1 px-1 py-0.5'>
-                            <p className='text-[#666666]'>Home</p>
-                            <Image src={'/rightArrow.svg'} alt={'arrowRight'} height={24} width={12} />
-                        </div>
-                        <div className='px-1 py-0.5 flex items-center'>
-                            <p className='text-[#666666]'>Browse</p>
-                            <Image src={'/rightArrow.svg'} alt={'arrowRight'} height={24} width={12} />
-                        </div>
-                        <div className='px-1 py-0.5 flex items-center'>
-                            <p className='text-[#736BEA]'>Development</p>
-                        </div>
-                    </div>
-
+                    <LocationV2/>
                     <h1 className='text-[#141414] font-inter font-semibold text-[40px] leading-none tracking-[0%]'>Advanced React & TypeScript Development</h1>
 
                 </div>
@@ -41,15 +30,9 @@ export default function CoursePage({ params }) {
 
                                 <div className='flex gap-[12px]'>
 
-                                    <div className='flex gap-1 items-center'>
-                                        <Image src={'/boxicons_calendar.svg'} alt={'calendar'} width={24} height={24}/>
-                                        <span className='text-[#525252] font-inter font-medium text-[14px] leading-[100%] tracking-[0%]'>12 Weeks</span>
-                                    </div>
+                                    <CourseDate img={'/boxicons_calendar.svg'} alt={'calendar'}>12 Weeks</CourseDate>
 
-                                    <div className='flex gap-1 items-center'>
-                                        <Image src={'/tabler_clock.svg'} alt={'calendar'} width={24} height={24}/>
-                                        <span className='text-[#525252] font-inter font-medium text-[14px] leading-[100%] tracking-[0%]'>12 Weeks</span>
-                                    </div>
+                                    <CourseDate img={'/tabler_clock.svg'} alt={'clock'}>128 Hours</CourseDate>
 
                                 </div>
 
