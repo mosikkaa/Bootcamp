@@ -5,6 +5,9 @@ import { LocationV2 } from "@/components/atoms/Location/Location";
 import Image from "next/image";
 import CourseDate from "@/components/atoms/CourseDate/CourseDate";
 import {use, useState} from "react";
+import WeeklySchedule from "@/components/molecules/WeeklySchedule/WeeklySchedule";
+import TimeSlot from "@/components/molecules/TimeSlot/TimeSlot";
+import SessionType from "@/components/molecules/SessionType/SessionType";
 
 const CATEGORY_ICONS = {
     "Development": "development",
@@ -16,7 +19,12 @@ const CATEGORY_ICONS = {
 
 const CoursePage = ({ params }) => {
     const { id } = use(params);
+
     const [isSchedule, setScheduleOpen] = useState(true);
+    const [isTimeSlot, setTimeSlotOpen] = useState(false);
+    const [selectedScheduleId, setSelectedScheduleId] = useState(null);
+    const [selectedTimeSlotId, setSelectedTimeSlotId] = useState(null);
+    const [isSessionType, setSessionTypeOpen] = useState(false);
 
     const { data: course } = useQuery({
         queryKey: ["course", id],
@@ -75,6 +83,7 @@ const CoursePage = ({ params }) => {
                                     <span>{course.category?.name}</span>
                                 </button>
                             </div>
+
                         </div>
                     </div>
 
@@ -107,22 +116,37 @@ const CoursePage = ({ params }) => {
                 <div className='w-[530px] flex flex-col gap-[11px]'>
                     <div className='flex flex-col rounded-[12px] gap-[32px]'>
 
-                        <div className='flex flex-col gap-[18px] w-full'>
-                            <button onClick={() => setScheduleOpen(!isSchedule)} className='flex justify-between'>
-                                <div className='flex gap-2 items-center'>
-                                    <Image src={'/Icon_Set_One.svg'} alt='One' width={28} height={28} />
-                                    <h2 className='text-[#130E67] font-inter font-semibold text-[24px] leading-[100%] tracking-normal'>Weekly Schedule</h2>
-                                </div>
-                                <Image src={'/Icon_Title_Down.svg'} alt='ArrowDown' width={28} height={28} />
-                            </button>
 
-                            <div className={`gap-[12px] ${isSchedule ? 'flex' : 'hidden'}`}>
-                                <button className='rounded-[12px] w-[123.5px] bg-white p-[10px] h-[91px] border border-[#D1D1D1] text-[#292929] font-inter font-semibold text-[16px] leading-[100%] tracking-normal text-center'>Mon - Wed</button>
-                                <button className='rounded-[12px] w-[123.5px] bg-[#F5F5F5] p-[10px] h-[91px] border border-[#D1D1D1] text-[#D1D1D1] font-inter font-semibold text-[16px] leading-[100%] tracking-normal text-center'>Tue - Thu</button>
-                                <button className='rounded-[12px] w-[123.5px] bg-white p-[10px] h-[91px] border border-[#D1D1D1] text-[#292929] font-inter font-semibold text-[16px] leading-[100%] tracking-normal text-center'>Wed - Fri</button>
-                                <button className='rounded-[12px] w-[123.5px] bg-[#F5F5F5] p-[10px] h-[91px] border border-[#D1D1D1] text-[#D1D1D1] font-inter font-semibold text-[16px] leading-[100%] tracking-normal text-center'>Weekend</button>
-                            </div>
-                        </div>
+                        <WeeklySchedule
+                            courseId={id}
+                            isOpen={isSchedule}
+                            onToggle={() => setScheduleOpen(!isSchedule)}
+                            onSelect={(scheduleId) => {
+                                setSelectedScheduleId(scheduleId);
+                                if (scheduleId) setTimeSlotOpen(true);
+                            }}
+                        />
+
+                        <TimeSlot
+                            courseId={id}
+                            weeklyScheduleId={selectedScheduleId}
+                            isOpen={isTimeSlot}
+                            onToggle={() => setTimeSlotOpen(!isTimeSlot)}
+                            onSelect={(slotId) => {
+                                setSelectedTimeSlotId(slotId);
+                                if (slotId) setSessionTypeOpen(true);
+                            }}
+                        />
+
+                        <SessionType
+                            courseId={id}
+                            weeklyScheduleId={selectedScheduleId}
+                            timeSlotId={selectedTimeSlotId}
+                            isOpen={isSessionType}
+                            onToggle={() => setSessionTypeOpen(!isSessionType)}
+                        />
+
+
 
                         <div className='w-[530px] rounded-[12px] p-[40px] gap-[32px] border border-[#F5F5F5] bg-white flex flex-col'>
                             <div className='flex flex-col gap-[32px]'>

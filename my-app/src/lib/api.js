@@ -43,3 +43,19 @@ export const getFeaturedCourses = () =>
 
 export const getCourse = (id) =>
     api.get(`/courses/${id}`).then(r => r.data.data);
+
+export const getWeeklySchedules = (courseId) =>
+    api.get(`/courses/${courseId}/weekly-schedules`).then(r => r.data.data);
+
+export const getTimeSlots = (courseId, weeklyScheduleId) =>
+    api.get(`/courses/${courseId}/time-slots`, {
+        params: { weekly_schedule_id: weeklyScheduleId }
+    }).then(r => r.data.data);
+
+export const getSessionTypes = (courseId, weeklyScheduleId, timeSlotId) =>
+    api.get(`/courses/${courseId}/session-types`, {
+        params: {
+            weekly_schedule_id: weeklyScheduleId,
+            time_slot_id: timeSlotId,
+        }
+    }).then(r => r.data.data);
