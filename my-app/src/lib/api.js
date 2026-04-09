@@ -37,3 +37,9 @@ export const getCourses = ({ page, sort, categories, topics, instructors }) =>
             ...(instructors?.length && { "instructors[]": instructors }),
         }
     }).then(r => r.data);
+
+export const getFeaturedCourses = () =>
+    api.get("/courses/featured").then(r => toArray(r.data))
+
+export const getCourse = (id) =>
+    api.get(`/courses/${id}`).then(r => r.data.data);
