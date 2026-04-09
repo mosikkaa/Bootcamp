@@ -10,12 +10,12 @@ const Topics = () => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const selectedCategory = searchParams.get("category") || "";
-    const activeTopics = searchParams.getAll("topic");
+    const selectedCategories = searchParams.getAll("category");
+    const activeTopics =  searchParams.getAll("topic");
 
     const { data: topics = [] } = useQuery({
-        queryKey: ["topics", selectedCategory],
-        queryFn: () => getTopics(selectedCategory),
+        queryKey: ["topics", selectedCategories],
+        queryFn: () => getTopics(selectedCategories),
     });
 
     const handleTopic = (topicId) => {
@@ -32,7 +32,7 @@ const Topics = () => {
         }
 
         params.set("page", "1");
-        router.push(`${pathname}?${params.toString()}`);
+        router.push(`${pathname}?${params.toString()}`,{scroll:false});
     };
 
     return (

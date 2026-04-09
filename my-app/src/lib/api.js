@@ -17,13 +17,23 @@ export const getCategories = () =>
         return toArray(r.data);
     });
 
-export const getTopics = (categoryId) =>
-    api.get("/topics", { params: categoryId ? { category_id: categoryId } : {} })
-        .then(r => {
-            return toArray(r.data);
-        });
+export const getTopics = (categoryIds) =>
+    api.get("/topics", {
+        params: categoryIds?.length ? { "categories[]": categoryIds } : {}
+    }).then(r => toArray(r.data));
 
 export const getInstructors = () =>
     api.get("/instructors").then(r => {
         return toArray(r.data);
     });
+
+export const getCourses = ({ page, sort, categories, topics, instructors }) =>
+    api.get("/courses", {
+        params: {
+            sort,
+            ...(page && { page }),
+            ...(categories?.length && { "categories[]": categories }),
+            ...(topics?.length && { "topics[]": topics }),
+            ...(instructors?.length && { "instructors[]": instructors }),
+        }
+    }).then(r => r.data);
