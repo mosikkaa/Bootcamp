@@ -1,9 +1,8 @@
 import axios from "axios";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
 
 const api = axios.create({
-    baseURL: baseUrl
+    baseURL: process.env.NEXT_PUBLIC_API_URL
 });
 
 const toArray = (data, keys = ["data", "categories", "topics", "instructors"]) => {
@@ -13,6 +12,13 @@ const toArray = (data, keys = ["data", "categories", "topics", "instructors"]) =
     }
     return [];
 };
+
+api.interceptors.request.use((config) => {
+    const state = JSON.parse(localStorage.getItem('auth-storage') || '{}');
+    const token = state?.state?.token;
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+});
 
 export const getCategories = () =>
     api.get("/categories").then(r => {
@@ -70,13 +76,6 @@ export const register = (formData) =>
 export const login = ({ email, password }) =>
     api.post("/login", { email, password }).then(r => r.data.data);
 
-api.interceptors.request.use((config) => {
-    const state = JSON.parse(localStorage.getItem('auth-storage') || '{}');
-    const token = state?.state?.token;
-    if (token) config.headers.Authorization = `Bearer ${token}`;
-    return config;
-});
-
 export const logout = () =>
     api.post("/logout").then(r => r.data);
 
@@ -99,3 +98,6 @@ export const updateProfile = (formData) =>
     api.put("/profile", formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
     }).then(r => r.data.data);
+
+export const getMe = () =>
+    api.get("/me").then(r => r.data.data);

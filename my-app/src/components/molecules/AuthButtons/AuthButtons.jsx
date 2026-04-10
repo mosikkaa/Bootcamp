@@ -17,7 +17,6 @@ const AuthButtons = () => {
                         height={36}
                         className='rounded-full object-cover'
                     />
-                    <span className='font-medium'>{user?.username}</span>
                 </button>
             </div>
         );
