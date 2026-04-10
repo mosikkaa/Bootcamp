@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+
 const api = axios.create({
-    baseURL: "https://api.redclass.redberryinternship.ge/api",
+    baseURL: baseUrl
 });
 
 const toArray = (data, keys = ["data", "categories", "topics", "instructors"]) => {
@@ -58,4 +60,42 @@ export const getSessionTypes = (courseId, weeklyScheduleId, timeSlotId) =>
             weekly_schedule_id: weeklyScheduleId,
             time_slot_id: timeSlotId,
         }
+    }).then(r => r.data.data);
+
+export const register = (formData) =>
+    api.post("/register", formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    }).then(r => r.data.data);
+
+export const login = ({ email, password }) =>
+    api.post("/login", { email, password }).then(r => r.data.data);
+
+api.interceptors.request.use((config) => {
+    const state = JSON.parse(localStorage.getItem('auth-storage') || '{}');
+    const token = state?.state?.token;
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+});
+
+export const logout = () =>
+    api.post("/logout").then(r => r.data);
+
+export const enroll = (data) =>
+    api.post("/enrollments", data).then(r => r.data);
+
+export const getEnrollments = () =>
+    api.get("/enrollments").then(r => r.data.data);
+
+export const completeCourse = (enrollmentId) =>
+    api.patch(`/enrollments/${enrollmentId}/complete`).then(r => r.data.data);
+
+export const retakeCourse = (enrollmentId) =>
+    api.delete(`/enrollments/${enrollmentId}`).then(r => r.data);
+
+export const reviewCourse = (courseId, rating) =>
+    api.post(`/courses/${courseId}/reviews`, { rating }).then(r => r.data);
+
+export const updateProfile = (formData) =>
+    api.put("/profile", formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
     }).then(r => r.data.data);

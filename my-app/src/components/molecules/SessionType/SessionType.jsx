@@ -49,7 +49,7 @@ const SessionType = ({ courseId, weeklyScheduleId, timeSlotId, isOpen, onToggle,
                             onClick={() => {
                                 const newId = selectedId === session.id ? null : session.id;
                                 setSelectedId(newId);
-                                onSelect?.(newId);
+                                onSelect?.(newId ? session.courseScheduleId : null);
                             }}
                             className={`group rounded-[12px] w-[123.5px] p-[10px] h-[91px] hover:bg-[#DDDBFA] hover:border-[#958FEF] hover:text-[#4F46E5] border font-inter font-semibold text-[16px] leading-[100%] tracking-normal text-center transition-colors flex flex-col items-center justify-between ${
                                 isSelected

@@ -1,7 +1,9 @@
+'use client'
 import Logo from '@/components/atoms/Logo/Logo';
 import NavItem from '@/components/molecules/NavItem/NavItem';
 import browse_icon from '../../../../public/BrowseIcon.svg'
 import AuthButtons from "@/components/molecules/AuthButtons/AuthButtons";
+import useAuthStore from "@/store/useAuthStore";
 
 const navLinks = [
     { href: '/browse', label: 'Browse Courses', img: browse_icon },
@@ -9,15 +11,21 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+    const { isLoggedIn } = useAuthStore();
+
+    const visibleLinks = isLoggedIn
+        ? navLinks
+        : navLinks.filter(link => !link.isSidebar);
+
     return (
         <header className='w-full flex justify-center items-center'>
-            <nav className='w-full flex justify-between items-center px-[177px]! py-[24px]! bg-[#F5F5F5]  border-[#D1D1D1] shadow-[0px_0px_11.7px_0px_#0000000A] border-b'>
+            <nav className='w-full flex justify-between items-center px-[177px]! py-[24px]! bg-[#F5F5F5] border-[#D1D1D1] shadow-[0px_0px_11.7px_0px_#0000000A] border-b'>
 
                 <Logo />
 
                 <div className='flex items-center gap-9'>
                     <ul className='flex items-center gap-8'>
-                        {navLinks.map((link, index) => (
+                        {visibleLinks.map((link, index) => (
                             <li key={index}>
                                 <NavItem
                                     href={link.href}

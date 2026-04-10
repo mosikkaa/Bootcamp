@@ -2,8 +2,13 @@
 import Modal from '@/components/atoms/Modal/Modal';
 import Button from '@/components/atoms/Button/Button';
 import { useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { login as loginUser } from '@/lib/api';
+import useAuthStore from '@/store/useAuthStore';
 
 const LoginModal = ({ isOpen, onClose, onSignUpOpen }) => {
+    const { login, closeAll } = useAuthStore();
+
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             email: '',
@@ -11,15 +16,25 @@ const LoginModal = ({ isOpen, onClose, onSignUpOpen }) => {
         }
     });
 
+    const { mutate, isPending, isError, error } = useMutation({
+        mutationFn: loginUser,
+        onSuccess: (data) => {
+            login(data);
+            handleClose();
+        },
+        onError: (err) => {
+            console.log("error response:", err.response?.data);
+        }
+    });
+
     const handleClose = () => {
         reset();
+        closeAll();
         onClose();
     };
 
     const onSubmit = (data) => {
-        console.log('Login submitted:', data);
-        alert('Logged in successfully');
-        handleClose();
+        mutate(data);
     };
 
     return (
@@ -41,7 +56,7 @@ const LoginModal = ({ isOpen, onClose, onSignUpOpen }) => {
                                 placeholder='you@example.com'
                                 {...register('email', {
                                     required: 'Email is required',
-                                    pattern: { value:/^\S+@\S+\.\S+$/, message: 'Invalid email' }
+                                    pattern: { value: /^\S+@\S+\.\S+$/, message: 'Invalid email' }
                                 })}
                                 className='w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500'
                             />
@@ -66,8 +81,19 @@ const LoginModal = ({ isOpen, onClose, onSignUpOpen }) => {
                             )}
                         </div>
 
-                        <Button type='submit' variant='nextAuth' className='w-full py-3'>
-                            Log In
+                        {isError && (
+                            <p className='text-red-500 text-sm text-center'>
+                                {error?.response?.data?.message || 'Invalid email or password.'}
+                            </p>
+                        )}
+
+                        <Button
+                            type='submit'
+                            variant='nextAuth'
+                            disabled={isPending}
+                            className='w-full py-3'
+                        >
+                            {isPending ? 'Logging in...' : 'Log In'}
                         </Button>
 
                         <div className='flex items-center justify-center gap-3 w-full'>
@@ -88,6 +114,7 @@ const LoginModal = ({ isOpen, onClose, onSignUpOpen }) => {
                                 Sign Up
                             </button>
                         </p>
+
                     </form>
                 </div>
             </div>
