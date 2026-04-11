@@ -4,7 +4,7 @@ import Button from "@/components/atoms/Button/Button";
 
 const CardItem = ({ course }) => {
     return (
-        <Link href={`/courses/${course.id}`} className="block">
+        <div className="block">
             <div className='w-[506px] border-[#F5F5F5] bg-white h-[576px] rounded-xl p-5 gap-[24px] border flex flex-col justify-between'>
 
                 <div className='flex flex-col gap-4'>
@@ -17,29 +17,34 @@ const CardItem = ({ course }) => {
                     />
                     <div className='flex flex-col gap-3'>
                         <div className='flex justify-between'>
-                            <span>Lecturer {course.instructor?.name}</span>
+                            <span className='font-["Inter"] flex gap-1 items-center font-medium text-[14px] leading-none tracking-normal'>
+                                <span className="text-[#A3A3A3]">Lecturer </span>
+                                <span className="text-[#525252]">{course.instructor?.name}</span>
+                            </span>
                             <div className='flex gap-1 items-center'>
                                 <Image className='w-[18px] h-[18px]' src={'/star.svg'} alt={'star'} width={18} height={18}/>
                                 <p>{course.avgRating ?? "N/A"}</p>
                             </div>
                         </div>
                         <div>
-                            <h1>{course.title}</h1>
+                            <h1 className='font-["Inter"] font-semibold text-[24px] leading-none tracking-normal text-[#141414]'>{course.title}</h1>
                         </div>
                     </div>
-                    <span>{course.description}</span>
+                    <span className='font-["Inter"] font-medium text-[16px] leading-[24px] tracking-normal text-[#666666]'>{course.description}</span>
                 </div>
 
                 <div className='flex justify-between items-center'>
-                    <div className='flex gap-2'>
-                        <span>Starting from</span>
-                        <h2>${parseFloat(course.basePrice).toFixed(0)}</h2>
+                    <div className='flex gap-2 items-center'>
+                        <span className='font-["Inter"] font-medium text-[12px] leading-none tracking-normal text-[#8A8A8A]'>Starting from</span>
+                        <h2 className='font-["Inter"] font-semibold text-[32px] leading-none tracking-normal text-right text-[#141414]'>${parseFloat(course.basePrice).toFixed(0)}</h2>
                     </div>
-                    <Button>Details</Button>
+                    <Link href={`/courses/${course.id}`} className='w-fit'>
+                        <Button variant="featured">Details</Button>
+                    </Link>
                 </div>
 
             </div>
-        </Link>
+        </div>
     );
 };
 

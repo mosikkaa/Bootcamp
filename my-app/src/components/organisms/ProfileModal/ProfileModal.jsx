@@ -145,7 +145,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                     <div className='flex flex-col gap-1'>
                         <label className='text-sm font-medium text-[#130E67]'>Upload Avatar</label>
 
-                        <label className='w-full items-center flex flex-col rounded-[8px] border-[1.5px] border border-[#D1D1D1] gap-[8px] py-[30px] bg-white'>
+                        <label className='w-full items-center flex flex-col rounded-[8px] border-[1.5px] border-[#D1D1D1] gap-[8px] py-[30px] bg-white'>
 
                             <Image src={'/upload_vector.svg'} alt={'Upload'} width={34} height={34}/>
 
