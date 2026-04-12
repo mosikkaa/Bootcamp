@@ -39,9 +39,9 @@ const Sidebar = () => {
 
             <div className='absolute inset-0 bg-black/30' onClick={closeSidebar} />
 
-            <div className='relative z-999 gap-3 w-[794px] h-full items-center bg-[#F5F5F5] flex flex-col overflow-y-auto'>
+            <div className='relative z-999 gap-[37px] w-[794px] h-full items-center bg-[#F5F5F5] flex flex-col overflow-y-auto'>
 
-                <div className='flex h-[86px] gap-[202px] items-end'>
+                <div className='flex gap-[202px] items-end'>
                     <h2 className='font-["Inter"] font-semibold text-[40px] leading-[44px] tracking-[-0.005em] text-[#0A0A0A]'>Enrolled Courses</h2>
                     <span className='font-["Inter"] text-[16px] tracking-normal text-[#0A0A0A]'>
                         <span className='font-medium leading-[24px]'>Total Enrollments:</span>
@@ -58,9 +58,9 @@ const Sidebar = () => {
                                 <div className='flex gap-[18px]'>
                                     <Image src={enrollment.course?.image || '/StartBGTry.svg'} alt={enrollment.course?.title} width={269} height={191} className='rounded-[10px] object-cover w-[269px] h-[191px]'/>
 
-                                    <div className='flex flex-col items-start gap-2 w-[296px]'>
+                                    <div className='flex flex-col items-start justify-between w-[296px]'>
 
-                                        <div className='flex justify-between items-center w-full'>
+                                        <div className='flex justify-between items-center h-[18px] w-full'>
                                             <span className='flex gap-1 font-["Inter"] font-medium text-[14px] leading-none tracking-normal'>
                                                 <span className='text-[#A3A3A3]'>Instructor</span>
                                                 <span className='text-[#525252]'>{enrollment.course?.instructor?.name}</span>
@@ -73,12 +73,30 @@ const Sidebar = () => {
 
                                         <h3 className='font-["Inter"] font-semibold text-[20px] leading-[24px] tracking-normal text-[#141414]'>{enrollment.course?.title}</h3>
 
-                                        <ul className='flex flex-col gap-0.5 mt-1'>
-                                            <li className='text-xs text-gray-500'><Image src={'/calendar_vector.svg'} alt={'calendar'} width={16} height={16}/> {enrollment.schedule?.weeklySchedule?.label}</li>
-                                            <li className='text-xs text-gray-500'><Image src={'/time_vector.svg'} alt={'time'} width={16} height={16}/> {enrollment.schedule?.timeSlot?.label}</li>
-                                            <li className='text-xs text-gray-500 capitalize'><Image src={'/person_vector.svg'} alt={'person'} width={16} height={16}/> {enrollment.schedule?.sessionType?.name}</li>
+                                        <ul className='flex flex-col '>
+                                            <li className='flex gap-2'>
+                                                <Image src={'/calendar_vector.svg'} alt={'calendar'} width={16} height={16}/>
+                                                <span className='font-["Inter"] font-normal text-[14px] leading-[26px] tracking-normal text-[#666666]'>{enrollment.schedule?.weeklySchedule?.label}</span>
+                                            </li>
+                                            <li className='flex gap-2'>
+                                                    <Image src={'/time_vector.svg'} alt={'time'} width={16} height={16}/>
+                                                <span className='font-["Inter"] font-normal text-[14px] leading-[26px] tracking-normal text-[#666666]'>
+                                                    {enrollment.schedule?.timeSlot?.label?.replace(/[()]/g, '')}
+                                                </span>
+                                            </li>
+                                            <li className='flex gap-2 capitalize'>
+                                                    <Image src={'/person_vector.svg'} alt={'person'} width={16} height={16}/>
+                                                <span className='font-["Inter"] font-normal text-[14px] leading-[26px] tracking-normal text-[#666666]'>
+                                                    {enrollment.schedule?.sessionType?.name.replace(/[_]/g, ' ')}
+                                                </span>
+                                            </li>
                                             {enrollment.schedule?.location && (
-                                                <li className='text-xs text-gray-500'><Image src={'/location_vector.svg'} alt={'location'} width={16} height={16}/> {enrollment.schedule.location}</li>
+                                                <li className='flex gap-2'>
+                                                        <Image src={'/location_vector.svg'} alt={'location'} width={16} height={16}/>
+                                                    <span className='font-["Inter"] font-normal text-[14px] leading-[26px] tracking-normal text-[#666666]'>
+                                                        {enrollment.schedule?.location?.replace('Tbilisi', 'Tbilisi,')}
+                                                    </span>
+                                                </li>
                                             )}
                                         </ul>
 

@@ -10,6 +10,7 @@ const Button = ({ children, onClick, variant }) => {
         viewV2:'w-[117px] h-[48px] rounded-lg gap-0.5 py-3 px-4 border-2 border-[#958FEF] text-[#4F46E5]',
         progLogin:'font-inter font-medium text-[16px] leading-[24px] tracking-[0%] text-center rounded-lg py-[9px] px-[19.3px] bg-[#4F46E5] text-white',
         nextAuth:'w-full h-[47px] rounded-[8px] p-[10px] bg-[#4F46E5] text-white',
+        enrolled:'rounded-[100px] p-4 bg-[#736BEA1A] font-["Inter"] font-semibold text-[20px] leading-[24px] tracking-normal text-[#736BEA]',
         categories:'group flex items-center h-[39px] rounded-[12px] px-[12px] py-[8px] gap-[10px] bg-[#FFFFFF] transition duration-300 ease-out hover:text-[#281ED2] hover:bg-[#DDDBFA]',
         categoriesActive: 'group flex items-center h-[39px] rounded-[12px] px-[12px] py-[8px] gap-[10px] bg-[#EEEDFC] text-[#281ED2] border border-[#281ED2]',
         instructors:'group flex items-center rounded-[12px] px-[12px] py-[8px] gap-[10px] bg-[#FFFFFF] transition duration-300 ease-out hover:text-[#281ED2] hover:bg-[#DDDBFA]',

@@ -24,18 +24,18 @@ const WeeklySchedule = ({ courseId, isOpen, onToggle,onSelect}) => {
             <button onClick={onToggle} className='flex justify-between'>
                 <div className='flex gap-2 items-center'>
                     <Image
-                        className={`${isOpen ? '' : '[filter:invert(56%)_sepia(26%)_saturate(0%)_hue-rotate(240deg)_brightness(93%)_contrast(85%)]'}`}
-                        src={'/Icon_Set_One.svg'}
+                        className={`${(!isOpen && selectedId) && ''} ${(!isOpen && !selectedId) && '[filter:invert(56%)_sepia(26%)_saturate(0%)_hue-rotate(240deg)_brightness(93%)_contrast(85%)]'}`}
+                        src={`${selectedId ? '/Icon_Set_One_Done.svg' : '/Icon_Set_One.svg'}`}
                         alt='One'
                         width={28}
                         height={28}
                     />
-                    <h2 className={`${isOpen ? 'text-[#130E67]' : 'text-[#8A8A8A]'} font-inter font-semibold text-[24px] leading-[100%] tracking-normal`}>
+                    <h2 className={`${(!isOpen && !selectedId) ? 'text-[#8A8A8A]' : 'text-[#130E67]'} ${(isOpen && selectedId) && 'text-[#130E67]'} font-inter font-semibold text-[24px] leading-[100%] tracking-normal`}>
                         Weekly Schedule
                     </h2>
                 </div>
                 <Image
-                    className={`${isOpen ? 'rotate-0' : 'rotate-180 [filter:invert(56%)_sepia(26%)_saturate(0%)_hue-rotate(240deg)_brightness(93%)_contrast(85%)]'}`}
+                    className={`${isOpen ? 'rotate-0' : 'rotate-180'} ${(!isOpen && !selectedId) && '[filter:invert(56%)_sepia(26%)_saturate(0%)_hue-rotate(240deg)_brightness(93%)_contrast(85%)]'}`}
                     src={'/Icon_Title_Down.svg'}
                     alt='ArrowDown'
                     width={28}

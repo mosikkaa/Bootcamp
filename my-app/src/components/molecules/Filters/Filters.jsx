@@ -31,7 +31,7 @@ const Filters = () => {
             <div className='flex flex-col gap-8'>
                 <div className='flex justify-between items-center'>
                     <h1 className='font-sans font-semibold text-[40px] text-[#0A0A0A] tracking-normal'>Filter</h1>
-                    <button onClick={clearAllFilters} className='flex group transition duration-300 hover:text-[#281ED2] items-center gap-[7px]'>
+                    <button onClick={clearAllFilters} className={`${activeFiltersCount===0 ? 'hidden' : 'flex'} group transition duration-300 hover:text-[#281ED2] items-center gap-[7px]`}>
                         <span className='font-medium text-[#8A8A8A] transition duration-300 group-hover:text-[#281ED2] text-[16px] leading-[24px] tracking-normal font-inter'>Clear All Filters</span>
                         <Image className='transition duration-300 group-active:[filter:invert(15%)_sepia(60%)_saturate(6950%)_hue-rotate(247deg)_brightness(79%)_contrast(113%)] group-hover:[filter:invert(15%)_sepia(60%)_saturate(6950%)_hue-rotate(247deg)_brightness(79%)_contrast(113%)]' src='/clear_button.svg' alt={'Clear All Filters'} width={10} height={10}/>
                     </button>

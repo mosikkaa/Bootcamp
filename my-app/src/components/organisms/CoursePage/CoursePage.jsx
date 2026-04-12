@@ -5,13 +5,16 @@ import { LocationV2 } from "@/components/atoms/Location/Location";
 import { use} from "react";
 import CourseInformation from "@/components/atoms/CourseInformation/CourseInformation";
 import EnrollSection from "@/components/molecules/EnrollSection/EnrollSection";
+import useAuthStore from "@/store/useAuthStore";
 
 
 const CoursePage = ({ params }) => {
+    const { isLoggedIn } = useAuthStore();
     const { id } = use(params);
 
+
     const { data: course } = useQuery({
-        queryKey: ["course", id],
+        queryKey: ["course", id, isLoggedIn],
         queryFn: () => getCourse(id),
     });
 

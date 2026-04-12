@@ -47,7 +47,7 @@ const Pagination = ({ totalPages = 1 }) => {
     };
 
     return (
-        <div className="flex gap-2">
+        <div className={`${totalPages=== 1 ? 'hidden' : 'flex'}  gap-2`}>
             <button
                 onClick={() => handlePageChange(activePage - 1)}
                 disabled={activePage <= 1}

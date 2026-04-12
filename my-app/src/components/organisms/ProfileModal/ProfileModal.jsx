@@ -65,7 +65,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                 <div className='flex gap-3 items-center'>
                     <Image
                         src={userData?.avatar || userData?.profileComplete ? '/complete_vector.svg' : '/incomplete_vector.svg'}
-                        alt={userData?.username}
+                        alt={'Avatar'}
                         width={56}
                         height={56}
                         className='object-cover'

@@ -17,6 +17,7 @@ const Continue = () => {
 
     const visibleEnrollments = enrollments.slice(0, 4);
 
+    if (isLoggedIn && enrollments.length === 0) return null;
 
      return(
        <section className='relative flex flex-col gap-8 mb-16'>
@@ -29,7 +30,7 @@ const Continue = () => {
                <a onClick={openSidebar} className='cursor-pointer font-["Inter"] font-medium text-[20px] leading-none tracking-normal underline decoration-solid text-[#4F46E5]'>See all</a>
            </div>
 
-           <div className='relative flex justify-between'>
+           <div className='relative flex gap-4'>
 
                {isLoggedIn ? (
                    visibleEnrollments.map((enrollment) => (
