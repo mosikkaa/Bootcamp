@@ -1,11 +1,16 @@
+'use client'
 import Link from "next/link";
 import FooterColumn from "@/components/atoms/FooterColumn/FooterColumn";
 import FooterItem from "@/components/molecules/FooterItem/FooterItem";
 import FooterLogo from "@/components/atoms/FooterLogo/FooterLogo";
 import Social from "@/components/atoms/Social/Social";
+import useAuthStore from "@/store/useAuthStore";
 
 
 const Footer = () => {
+    const { isLoggedIn ,openLogin,openSignUp,openSidebar,openProfile} = useAuthStore();
+
+
      return(
        <footer className='w-full flex border-t pt-[80px] px-[177px] pb-[20px] h-[334px] items-center justify-center border-[#D1D1D1]'>
            <div className='w-full flex flex-col gap-[74px]'>
@@ -22,12 +27,19 @@ const Footer = () => {
 
                    <div className='flex gap-[120px]'>
                        <FooterColumn head={'Explore'}>
-                           <Link href={'/'}>Enrolled Courses</Link>
-                           <Link href={'/'}>Browse Courses</Link>
+                           {isLoggedIn && <button onClick={openSidebar} className={'font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'}>Enrolled Courses</button>}
+                           <Link href={'/browse'} className={'font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'}>Browse Courses</Link>
                        </FooterColumn>
 
                        <FooterColumn head={'Account'}>
-                           <Link href={'/'}>My Profile</Link>
+                           {isLoggedIn ?
+                               <button onClick={openProfile} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'>My Profile</button>
+                               :
+                               <>
+                                   <button onClick={openLogin} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'>Sign Up</button>
+                                   <button onClick={openSidebar} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'>Log In</button>
+                               </>
+                           }
                        </FooterColumn>
 
                        <FooterItem/>
@@ -36,8 +48,13 @@ const Footer = () => {
                </div>
 
                <div className='flex justify-between'>
-                   <p>Copyright © 2026 Redberry International</p>
-                   <p>All Rights Reserved | Terms and Conditions | Privacy Policy</p>
+                   <p className='font-["Inter"] font-normal text-[18px] leading-none tracking-normal text-[#666666]'>Copyright © 2026 Redberry International</p>
+                   <div className='flex gap-2 text-[#666666] font-["Inter"] font-normal text-[18px] leading-none tracking-normal'>All Rights Reserved
+                       <div className='w-[0.8px] h-full bg-[#666666] text-[#666666]'/>
+                       <Link href={'/'} className='text-[#4F46E5]'>Terms And Conditions</Link>
+                       <div className='w-[0.8px] h-full bg-[#666666] text-[#666666]'/>
+                       <Link href={'/'} className='text-[#4F46E5]'>Privacy Policy</Link>
+                   </div>
                </div>
 
            </div>

@@ -7,10 +7,10 @@ const FooterLogo = () => {
                  <Link href="/" className="">
                      <img className="" src="/LogoFooter.svg" alt="Logo" />
                  </Link>
-                 <p>Bootcamp</p>
+                 <p className='font-["Inter"] font-medium text-[24px] leading-none tracking-normal text-[#130E67]'>Bootcamp</p>
              </div>
 
-             <span className=''>Your learning journey starts here! <br/>Browse courses to get started.</span>
+             <span className='font-["Inter"] font-medium text-[14px] leading-none align-middle tracking-normal text-[#130E67]'>Your learning journey starts here! <br/>Browse courses to get started.</span>
          </div>
      );
 };

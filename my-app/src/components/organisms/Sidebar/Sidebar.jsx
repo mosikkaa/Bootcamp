@@ -41,7 +41,7 @@ const Sidebar = () => {
 
             <div className='relative z-999 gap-[37px] w-[794px] h-full items-center bg-[#F5F5F5] flex flex-col overflow-y-auto'>
 
-                <div className='flex gap-[202px] items-end'>
+                <div className='flex gap-[202px] w-full h-[86px] items-end justify-center'>
                     <h2 className='font-["Inter"] font-semibold text-[40px] leading-[44px] tracking-[-0.005em] text-[#0A0A0A]'>Enrolled Courses</h2>
                     <span className='font-["Inter"] text-[16px] tracking-normal text-[#0A0A0A]'>
                         <span className='font-medium leading-[24px]'>Total Enrollments:</span>

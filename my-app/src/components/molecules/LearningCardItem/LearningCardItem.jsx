@@ -17,7 +17,7 @@ const LearningCardItem = ({enrollment}) => {
          <div className={`${isLoggedIn ? '' : 'filter blur-[20px]'} flex flex-col gap-2 w-[506px] bg-white border-[0.5px] border-[#F5F5F5] shadow-[0px_0px_11.7px_0px_#0000000A] rounded-xl p-5`}>
 
              <div className={`flex ${isLoggedIn ? '' : 'opacity-[76%]'}`}>
-                 <Image src={'/LearningTRY.svg'} alt={'Learning'} width={140} height={123}/>
+                 <Image src={enrollment?.course?.image || '/StartBGTry.svg'} alt={enrollment?.course?.title || 'Learning'} width={140} height={123} className='object-cover rounded-[12px]'/>
                  <div className='w-full flex flex-col gap-[9px] pr-1 pl-4'>
                      <div className='flex justify-between'>
                          <span className='flex gap-1 items-center font-["Inter"] font-medium text-[14px] leading-none tracking-normal'>
