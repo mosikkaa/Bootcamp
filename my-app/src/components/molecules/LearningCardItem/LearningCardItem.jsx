@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Button from "@/components/atoms/Button/Button";
 import useAuthStore from "@/store/useAuthStore";
-import {useQuery} from "@tanstack/react-query";
-import {getEnrollments} from "@/lib/api";
 import Link from "next/link";
 
 const LearningCardItem = ({enrollment}) => {
@@ -11,10 +9,8 @@ const LearningCardItem = ({enrollment}) => {
     const progress = enrollment?.progress;
     const fillWidth = (progress / 100) * 336;
 
-    console.log(enrollment)
-
      return(
-         <div className={`${isLoggedIn ? '' : 'filter blur-[20px]'} flex flex-col gap-2 w-[506px] bg-white border-[0.5px] border-[#F5F5F5] shadow-[0px_0px_11.7px_0px_#0000000A] rounded-xl p-5`}>
+         <Link href={`/courses/${enrollment?.course?.id}`} className={`${isLoggedIn ? '' : 'filter blur-[20px]'} flex flex-col gap-2 w-[506px] bg-white hover:border-[0.5px] hover:border-[#B7B3F4] hover:shadow-[0px_0px_25px_0px_#8A82D41A] active:border-[1px] active:border-[#958FEF] active:shadow-[0px_0px_35px_0px_#8A82D440] border-[0.5px] border-[#F5F5F5] shadow-[0px_0px_11.7px_0px_#0000000A] rounded-xl p-5`}>
 
              <div className={`flex ${isLoggedIn ? '' : 'opacity-[76%]'}`}>
                  <Image src={enrollment?.course?.image || '/StartBGTry.svg'} alt={enrollment?.course?.title || 'Learning'} width={140} height={123} className='object-cover rounded-[12px]'/>
@@ -47,12 +43,10 @@ const LearningCardItem = ({enrollment}) => {
                      </div>
                  </div>
 
-                 <Link href={`/courses/${enrollment?.course?.id}`} className='w-fit'>
                      <Button variant="view">View</Button>
-                 </Link>
              </div>
 
-         </div>
+         </Link>
      );
 };
 

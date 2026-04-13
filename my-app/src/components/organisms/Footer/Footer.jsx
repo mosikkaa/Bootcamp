@@ -36,8 +36,8 @@ const Footer = () => {
                                <button onClick={openProfile} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'>My Profile</button>
                                :
                                <>
-                                   <button onClick={openLogin} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'>Sign Up</button>
-                                   <button onClick={openSidebar} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'>Log In</button>
+                                   <button onClick={openSignUp} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'>Sign Up</button>
+                                   <button onClick={openLogin} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'>Log In</button>
                                </>
                            }
                        </FooterColumn>

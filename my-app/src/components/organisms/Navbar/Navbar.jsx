@@ -2,12 +2,13 @@
 import Logo from '@/components/atoms/Logo/Logo';
 import NavItem from '@/components/molecules/NavItem/NavItem';
 import browse_icon from '../../../../public/BrowseIcon.svg'
+import enroll_icon from '../../../../public/EnrollIcon.svg'
 import AuthButtons from "@/components/molecules/AuthButtons/AuthButtons";
 import useAuthStore from "@/store/useAuthStore";
 
 const navLinks = [
     { href: '/browse', label: 'Browse Courses', img: browse_icon },
-    { label: 'Enroll Courses', img: browse_icon, isSidebar: true },
+    { label: 'Enroll Courses', img: enroll_icon, isSidebar: true},
 ];
 
 const Navbar = () => {

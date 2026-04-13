@@ -101,8 +101,8 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
                 <div className='flex flex-col gap-[24px]'>
 
                     <div className='flex flex-col gap-1.5 items-center'>
-                        <h1>Create Account</h1>
-                        <span>Join and start learning today</span>
+                        <h1 className='font-["Inter"] font-semibold text-[32px] leading-none tracking-normal text-center text-[#141414]'>Create Account</h1>
+                        <span className='font-["Inter"] font-medium text-[14px] leading-none tracking-normal text-center text-[#666666]'>Join and start learning today</span>
                     </div>
 
                     <div className='flex justify-between items-center'>
@@ -113,31 +113,45 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
 
                     <form onSubmit={handleSubmit(onSubmit)} noValidate className='flex flex-col gap-4'>
 
-                        {currentFields.map((step) => (
-                            <div key={step.field} className='flex flex-col gap-1'>
-                                <label className='text-sm font-medium'>{step.label}</label>
-                                <input
-                                    type={step.type}
-                                    placeholder={step.placeholder}
-                                    {...register(
-                                        step.field,
-                                        step.field === 'confirmPassword'
-                                            ? {
-                                                required: 'Confirm your password',
-                                                validate: (value) => value === password || 'Passwords do not match'
-                                            }
-                                            : step.validation
+                        {currentFields.map((step) => {
+                            const { onChange, ...rest } = register(
+                                step.field,
+                                step.field === 'confirmPassword'
+                                    ? {
+                                        required: 'Confirm your password',
+                                        validate: (value) => value === password || 'Passwords do not match'
+                                    }
+                                    : step.validation
+                            );
+
+                            return (
+                                <div key={step.field} className='flex flex-col gap-[5px]'>
+                                    <div className='flex flex-col gap-2'>
+                                        <label className={`font-["Inter"] font-medium text-[14px] leading-none tracking-normal ${errors[step.field] && attemptedStep === active ? 'text-[#F4161A]' : 'text-[#3D3D3D]'}`}>
+                                            {step.label}
+                                        </label>
+                                        <input
+                                            type={step.type}
+                                            placeholder={step.placeholder}
+                                            {...rest}
+                                            onChange={(e) => {
+                                                onChange(e);
+                                                setAttemptedStep(null);
+                                            }}
+                                            className={`w-[360px] h-[48px] border-[1.5px] border-solid rounded-[8px] focus:placeholder:translate-x-[4px] transition-all duration-300 flex items-center gap-[10px] pt-[12px] pr-[15px] pb-[12px] pl-[13px] placeholder:text-[#8A8A8A] focus:placeholder:text-[#F5F5F5] font-["Inter"] font-medium text-[14px] leading-none tracking-normal align-middle text-[#3D3D3D] outline-none ${errors[step.field] && attemptedStep === active ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:border-[#8A8A8A]'}`}
+                                        />
+                                    </div>
+                                    {attemptedStep === active && errors[step.field] && (
+                                        <span className='text-[#F4161A] font-["Inter"] font-normal text-[12px] leading-none tracking-n'>
+                                             {errors[step.field].message}
+                                        </span>
                                     )}
-                                    className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors[step.field] ? 'border-red-500' : 'border-gray-300'}`}
-                                />
-                                {attemptedStep === active && errors[step.field] && (
-                                    <span className='text-red-500 text-xs'>{errors[step.field].message}</span>
-                                )}
-                            </div>
-                        ))}
+                                </div>
+                            );
+                        })}
 
                         {isError && (
-                            <p className='text-red-500 text-sm text-center'>
+                            <p className='text-[#F4161A] text-sm text-center'>
                                 {error?.response?.data?.message || 'Registration failed. Please try again.'}
                             </p>
                         )}

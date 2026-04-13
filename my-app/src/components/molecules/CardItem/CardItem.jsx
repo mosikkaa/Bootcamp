@@ -4,8 +4,8 @@ import Button from "@/components/atoms/Button/Button";
 
 const CardItem = ({ course }) => {
     return (
-        <div className="block">
-            <div className='w-[506px] border-[#F5F5F5] bg-white h-[576px] rounded-xl p-5 gap-[24px] border flex flex-col justify-between'>
+        <Link href={`/courses/${course.id}`} className="block">
+            <div className='w-[506px] border-[#F5F5F5] animate-out duration-300 active:border-[1px] active:border-[#958FEF] active:shadow-[0px_0px_35px_0px_#8A82D440] hover:shadow-[0px_0px_25px_0px_#8A82D41A] hover:border-[0.5px] hover:border-[#B7B3F4] bg-white h-[576px] rounded-xl p-5 gap-[24px] border flex flex-col justify-between'>
 
                 <div className='flex flex-col gap-4'>
                     <Image
@@ -22,7 +22,7 @@ const CardItem = ({ course }) => {
                                 <span className="text-[#525252]">{course.instructor?.name}</span>
                             </span>
                             <div className='flex gap-1 items-center'>
-                                <Image className='w-[18px] h-[18px]' src={'/star.svg'} alt={'star'} width={18} height={18}/>
+                                <Image className='w-[18px] h-[18px] object-cover' src={'/star.svg'} alt={'star'} width={18} height={18}/>
                                 <p>{course.avgRating ?? "N/A"}</p>
                             </div>
                         </div>
@@ -38,13 +38,11 @@ const CardItem = ({ course }) => {
                         <span className='font-["Inter"] font-medium text-[12px] leading-none tracking-normal text-[#8A8A8A]'>Starting from</span>
                         <h2 className='font-["Inter"] font-semibold text-[32px] leading-none tracking-normal text-right text-[#141414]'>${parseFloat(course.basePrice).toFixed(0)}</h2>
                     </div>
-                    <Link href={`/courses/${course.id}`} className='w-fit'>
-                        <Button variant="featured">Details</Button>
-                    </Link>
+                    <Button variant="featured">Details</Button>
                 </div>
 
             </div>
-        </div>
+        </Link>
     );
 };
 

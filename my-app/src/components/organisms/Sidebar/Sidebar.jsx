@@ -51,7 +51,7 @@ const Sidebar = () => {
 
                 <div className='flex flex-col items-center gap-3'>
                     {enrollments.map((enrollment) => (
-                        <div key={enrollment.id} className='flex flex-col bg-white gap-3 rounded-[12px] p-5 w-[623px]'>
+                        <Link href={`/courses/${enrollment?.course?.id}`} onClick={closeSidebar} key={enrollment.id} className='flex flex-col border-[0.5px] border-transparent hover:border-[0.5px] hover:border-[#B7B3F4] hover:shadow-[0px_0px_10px_0px_#8A82D440] active:border-[1px] active:border-[#958FEF] active:shadow-[0px_0px_35px_0px_#8A82D440] transition-all duration-300 bg-white gap-3 rounded-[12px] p-5 w-[623px]'>
 
                             <div className='flex flex-col gap-4'>
 
@@ -126,7 +126,7 @@ const Sidebar = () => {
                             </div>
 
 
-                        </div>
+                        </Link>
                     ))}
 
                     {enrollments.length === 0 && (
