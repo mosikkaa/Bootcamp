@@ -1,7 +1,7 @@
 'use client'
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide} from 'swiper/react';
+import { Navigation, Pagination,Autoplay} from 'swiper/modules';
 import {useRef, useState} from 'react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -38,8 +38,6 @@ const slides = [
 
 const Slider = () => {
 
-    const prevRef = useRef(null);
-    const nextRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const swiperRef = useRef(null);
 
@@ -48,14 +46,18 @@ const Slider = () => {
 
     return (
         <Swiper
-            modules={[Navigation, Pagination]}
-            pagination={{ clickable: true}}
+            modules={[Navigation, Pagination, Autoplay]}
+            pagination={{ clickable: true }}
             touchStartPreventDefault={false}
             simulateTouch={true}
-            autoplay={{ delay: 3000, disableOnInteraction: false }}
-            loop={false}
+            autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: false
+            }}
+            loop={true}
             onSwiper={(swiper) => (swiperRef.current = swiper)}
-            onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+            onRealIndexChange={(swiper) => setActiveIndex(swiper.realIndex)}
             className='w-full h-[420px] rounded-[30px] relative'
         >
             {slides.map((slide) => (
@@ -91,7 +93,7 @@ const Slider = () => {
                 </SwiperSlide>
             ))}
             <div className='absolute bottom-10 right-10 z-10 flex items-center gap-6'>
-                <button className='cursor-pointer' onClick={() => swiperRef.current?.slidePrev()}>
+                <button className='cursor-pointer' onClick={() => isFirst ? null : swiperRef.current?.slidePrev()}>
                     <Image
                         src='/arrow-previous.svg'
                         alt='prev'
@@ -100,7 +102,7 @@ const Slider = () => {
                         className={isFirst ? 'opacity-40 grayscale' : 'opacity-100'}
                     />
                 </button>
-                <button className='cursor-pointer' onClick={() => swiperRef.current?.slideNext()}>
+                <button className='cursor-pointer' onClick={() => isLast ? null : swiperRef.current?.slideNext()}>
                     <Image
                         src='/arrow-next.svg'
                         alt='next'

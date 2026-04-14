@@ -30,7 +30,7 @@ const Continue = () => {
                <a onClick={openSidebar} className='cursor-pointer font-["Inter"] font-medium text-[20px] leading-none tracking-normal underline decoration-solid text-[#4F46E5]'>See all</a>
            </div>
 
-           <div className='relative flex gap-4'>
+           <div className={`${visibleEnrollments.length === 3 ? 'justify-between' : 'justify-start gap-6'} relative flex`}>
 
                {isLoggedIn ? (
                    visibleEnrollments.map((enrollment) => (

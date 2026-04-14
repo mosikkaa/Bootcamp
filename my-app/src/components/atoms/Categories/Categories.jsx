@@ -5,6 +5,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getCategories } from "@/lib/api";
 
+
 const Categories = () => {
     const router = useRouter();
     const pathname = usePathname();
@@ -45,12 +46,21 @@ const Categories = () => {
                         variant={activeCategories.includes(String(category.id)) ? "categoriesActive" : "categories"}
                         onClick={() => handleCategory(category.id)}
                     >
-                        <Image
-                            src={'/development_vector.svg'}
-                            alt={category.name}
-                            width={24}
-                            height={24}
-                            className='transition duration-300 group-active:[filter:invert(15%)_sepia(60%)_saturate(6950%)_hue-rotate(247deg)_brightness(79%)_contrast(113%)] group-hover:[filter:invert(15%)_sepia(60%)_saturate(6950%)_hue-rotate(247deg)_brightness(79%)_contrast(113%)]'
+                        <div
+                            className={`
+            w-[24px] h-[24px] transition-colors duration-300 group-hover:bg-[#281ED2]
+            ${activeCategories.includes(String(category.id))
+                                ? 'bg-[#281ED2]'
+                                : 'bg-[#8A8A8A]'}
+        `}
+                            style={{
+                                maskImage: `url(${category.icon}_vector.svg)`,
+                                WebkitMaskImage: `url(${category.icon}_vector.svg)`,
+                                maskRepeat: 'no-repeat',
+                                WebkitMaskRepeat: 'no-repeat',
+                                maskSize: 'contain',
+                                WebkitMaskSize: 'contain'
+                            }}
                         />
                         <span>{category.name}</span>
                     </Button>

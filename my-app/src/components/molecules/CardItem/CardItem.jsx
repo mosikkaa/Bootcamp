@@ -23,7 +23,7 @@ const CardItem = ({ course }) => {
                             </span>
                             <div className='flex gap-1 items-center'>
                                 <Image className='w-[18px] h-[18px] object-cover' src={'/star.svg'} alt={'star'} width={18} height={18}/>
-                                <p>{course.avgRating ?? "N/A"}</p>
+                                <p className='font-["Inter"] font-medium text-[14px] leading-none tracking-normal text-[#525252]'>{course.avgRating ?? "N/A"}</p>
                             </div>
                         </div>
                         <div>

@@ -27,17 +27,17 @@ const Footer = () => {
 
                    <div className='flex gap-[120px]'>
                        <FooterColumn head={'Explore'}>
-                           {isLoggedIn && <button onClick={openSidebar} className={'font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'}>Enrolled Courses</button>}
-                           <Link href={'/browse'} className={'font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'}>Browse Courses</Link>
+                           {isLoggedIn && <a onClick={openSidebar} className={'font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal cursor-default'}>Enrolled Courses</a>}
+                           <Link href={'/browse'} className={'font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal cursor-default'}>Browse Courses</Link>
                        </FooterColumn>
 
                        <FooterColumn head={'Account'}>
                            {isLoggedIn ?
-                               <button onClick={openProfile} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'>My Profile</button>
+                               <a onClick={openProfile} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal cursor-default'>My Profile</a>
                                :
                                <>
-                                   <button onClick={openSignUp} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'>Sign Up</button>
-                                   <button onClick={openLogin} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal'>Log In</button>
+                                   <a onClick={openSignUp} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal cursor-default'>Sign Up</a>
+                                   <a onClick={openLogin} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal cursor-default'>Log In</a>
                                </>
                            }
                        </FooterColumn>

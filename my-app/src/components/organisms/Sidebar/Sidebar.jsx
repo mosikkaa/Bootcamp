@@ -49,7 +49,7 @@ const Sidebar = () => {
                     </span>
                 </div>
 
-                <div className='flex flex-col items-center gap-3'>
+                <div className={`flex flex-col items-center ${enrollments.length === 0 && 'justify-center h-[876px]'} gap-3`}>
                     {enrollments.map((enrollment) => (
                         <Link href={`/courses/${enrollment?.course?.id}`} onClick={closeSidebar} key={enrollment.id} className='flex flex-col border-[0.5px] border-transparent hover:border-[0.5px] hover:border-[#B7B3F4] hover:shadow-[0px_0px_10px_0px_#8A82D440] active:border-[1px] active:border-[#958FEF] active:shadow-[0px_0px_35px_0px_#8A82D440] transition-all duration-300 bg-white gap-3 rounded-[12px] p-5 w-[623px]'>
 
@@ -58,7 +58,7 @@ const Sidebar = () => {
                                 <div className='flex gap-[18px]'>
                                     <Image src={enrollment.course?.image || '/StartBGTry.svg'} alt={enrollment.course?.title} width={269} height={191} className='rounded-[10px] object-cover w-[269px] h-[191px]'/>
 
-                                    <div className='flex flex-col items-start justify-between w-[296px]'>
+                                    <div className='flex flex-col items-start gap-2 w-[296px]'>
 
                                         <div className='flex justify-between items-center h-[18px] w-full'>
                                             <span className='flex gap-1 font-["Inter"] font-medium text-[14px] leading-none tracking-normal'>
@@ -67,7 +67,7 @@ const Sidebar = () => {
                                             </span>
                                             <div className='flex items-center gap-1'>
                                                 <Image src='/star.svg' alt='star' width={14} height={14} />
-                                                <span className='text-sm font-medium'>{enrollment.course?.avgRating}</span>
+                                                <span className='font-["Inter"] font-medium text-[14px] leading-none tracking-normal text-[#525252]'>{enrollment.course?.avgRating}</span>
                                             </div>
                                         </div>
 
@@ -114,13 +114,8 @@ const Sidebar = () => {
                                             />
                                         </div>
                                     </div>
-                                    <Link
-                                        href={`/courses/${enrollment.course?.id}`}
-                                        onClick={closeSidebar}
-                                        className='w-fit'
-                                    >
-                                        <Button variant={"viewV2"}>View</Button>
-                                    </Link>
+                                    <Button variant={"viewV2"}>View</Button>
+
                                 </div>
 
                             </div>
@@ -130,8 +125,15 @@ const Sidebar = () => {
                     ))}
 
                     {enrollments.length === 0 && (
-                        <div className='flex flex-col items-center justify-center py-16 gap-2'>
-                            <p className='text-gray-400 text-sm'>No enrolled courses yet</p>
+                        <div className='flex flex-col gap-1 items-center'>
+                            <Image src={'/package.svg'} alt={'package'} width={190} height={170}/>
+                            <div className='flex flex-col gap-3 items-center'>
+                                <div className='flex flex-col gap-2 items-center'>
+                                    <h1 className='font-["Inter"] font-semibold text-[24px] leading-none tracking-normal text-center text-[#130E67]'>No Enrolled Courses Yet</h1>
+                                    <p className='font-["Inter"] font-medium text-[14px] leading-none tracking-normal text-center text-[#130E67]'>Your learning journey starts here! <br/>Browse courses to get started.</p>
+                                </div>
+                                <Link onClick={closeSidebar} href={'/browse'} className='h-[58px] rounded-[8px] flex items-center justify-center gap-[10px] pt-[17px] pr-[25px] pb-[17px] pl-[25px] bg-[#4F46E5] font-["Inter"] font-medium text-[16px] leading-[24px] tracking-normal text-center text-white'>Browse Courses</Link>
+                            </div>
                         </div>
                     )}
                 </div>

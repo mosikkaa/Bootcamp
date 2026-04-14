@@ -49,12 +49,15 @@ const Pagination = ({ totalPages = 1 }) => {
     return (
         <div className={`${totalPages=== 1 ? 'hidden' : 'flex'}  gap-2`}>
             <button
-                onClick={() => handlePageChange(activePage - 1)}
+                onClick={(e) => {
+                    e.currentTarget.blur();
+                    handlePageChange(activePage - 1);
+                }}
                 disabled={activePage <= 1}
-                className={`w-[40px] h-[40px] flex items-center justify-center rounded-[4px] border border-[#D1D1D1] ${
+                className={`w-[40px] h-[40px] flex items-center justify-center rounded-[4px] bg-white border border-[#D1D1D1] ${
                     activePage <= 1
                         ? "text-[#D1D1D1] cursor-not-allowed"
-                        : "text-[#4F46E5] bg-white hover:bg-gray-100"
+                        : "text-[#4F46E5] bg-white hover:border-[#B7B3F4] hover:bg-[#DDDBFA] focus:text-white focus:bg-[#281ED2] focus:border-[#4F46E5]"
                 }`}
             >
                 ←
@@ -64,12 +67,12 @@ const Pagination = ({ totalPages = 1 }) => {
                 <button
                     key={index}
                     onClick={() => handlePageChange(page)}
-                    className={`w-[40px] h-[40px] flex items-center justify-center rounded-[4px] border border-[#D1D1D1] ${
+                    className={`w-[40px] h-[40px] flex items-center justify-center hover:border-[#B7B3F4] hover:bg-[#DDDBFA] duration-500 transition-all ease-out rounded-[4px] border border-[#D1D1D1] ${
                         page === activePage
                             ? "bg-[#281ED2] border-[#4F46E5] text-white"
                             : page === "..."
                                 ? "cursor-default bg-white text-[#4F46E5]"
-                                : "bg-white text-[#4F46E5] hover:bg-gray-100"
+                                : "bg-white text-[#4F46E5] ]"
                     }`}
                 >
                     {page}
@@ -77,12 +80,15 @@ const Pagination = ({ totalPages = 1 }) => {
             ))}
 
             <button
-                onClick={() => handlePageChange(activePage + 1)}
+                onClick={(e) => {
+                    e.currentTarget.blur();
+                    handlePageChange(activePage + 1);
+                }}
                 disabled={activePage >= totalPages}
-                className={`w-[40px] h-[40px] flex items-center justify-center rounded-[4px] border border-[#D1D1D1] ${
+                className={`w-[40px] h-[40px] flex items-center font-["Inter"] font-medium text-[16px] leading-[24px] tracking-normal text-center justify-center rounded-[4px] duration-500 transition-all ease-out border border-[#D1D1D1] ${
                     activePage >= totalPages
                         ? "text-[#D1D1D1] cursor-not-allowed"
-                        : "text-[#4F46E5] bg-white hover:bg-gray-100"
+                        : "text-[#4F46E5] bg-white hover:border-[#B7B3F4] hover:bg-[#DDDBFA] focus:text-white focus:bg-[#281ED2] focus:border-[#4F46E5]"
                 }`}
             >
                 →

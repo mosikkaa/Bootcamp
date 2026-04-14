@@ -21,15 +21,15 @@ const Enrollment = ({ courseId, course }) => {
     const [selectedSessionTypeId, setSelectedSessionTypeId] = useState(null);
     const [conflictData, setConflictData] = useState(null);
     const [enrollError, setEnrollError] = useState(null);
-    const [isCompleted, setIsCompleted] = useState(false);
     const [isRetaken, setIsRetaken] = useState(false);
     const [showRating, setShowRating] = useState(false);
-    const [enrollmentId, setEnrollmentId] = useState(null);
     const [localEnrollment, setLocalEnrollment] = useState(null);
 
-    const isEnrolled = (!!course.enrollment || !!localEnrollment) && !isRetaken;
+    // LOGIC: Derived state ensures UI stays in sync without manual "isCompleted" state conflicts
     const enrollment = localEnrollment || course.enrollment;
-    const activeEnrollmentId = enrollmentId || enrollment?.id;
+    const isEnrolled = (!!enrollment) && !isRetaken;
+    const isCompleted = isRetaken ? false : !!enrollment?.completedAt;
+    const activeEnrollmentId = enrollment?.id;
     const allSelected = selectedScheduleId && selectedTimeSlotId && selectedSessionTypeId;
 
     const { data: sessionsData = [] } = useQuery({
@@ -39,8 +39,8 @@ const Enrollment = ({ courseId, course }) => {
     });
 
     const session = sessionsData.find(s => s.id === selectedSessionTypeId);
-    const basePrice = parseFloat(course.basePrice);
-    const sessionUpgradePrice = session ? parseFloat(session.priceModifier) : 0;
+    const basePrice = parseFloat(course.basePrice || 0);
+    const sessionUpgradePrice = session ? parseFloat(session.priceModifier || 0) : 0;
     const totalPrice = (basePrice + sessionUpgradePrice).toFixed(2);
 
     const invalidate = () => {
@@ -54,9 +54,7 @@ const Enrollment = ({ courseId, course }) => {
             setConflictData(null);
             setEnrollError(null);
             setIsRetaken(false);
-            const enrollmentData = data?.data || data;
-            setEnrollmentId(enrollmentData?.id);
-            setLocalEnrollment(enrollmentData);
+            setLocalEnrollment(data?.data || data);
             invalidate();
         },
         onError: (err) => {
@@ -71,9 +69,21 @@ const Enrollment = ({ courseId, course }) => {
 
     const { mutate: doComplete } = useMutation({
         mutationFn: () => completeCourse(activeEnrollmentId),
-        onSuccess: () => {
+        onSuccess: (updatedData) => {
+
+            const newEnrollmentData = updatedData?.data || updatedData;
+
+            if (newEnrollmentData) {
+                setLocalEnrollment(newEnrollmentData);
+            } else {
+                setLocalEnrollment(prev => ({
+                    ...prev,
+                    completedAt: new Date().toISOString(),
+                    progress: 100
+                }));
+            }
             invalidate();
-            setIsCompleted(true);
+
             if (!course.isRated) setShowRating(true);
         },
     });
@@ -83,9 +93,7 @@ const Enrollment = ({ courseId, course }) => {
         onSuccess: () => {
             invalidate();
             setIsRetaken(true);
-            setIsCompleted(false);
             setShowRating(false);
-            setEnrollmentId(null);
             setLocalEnrollment(null);
             setSelectedScheduleId(null);
             setSelectedTimeSlotId(null);
@@ -136,7 +144,7 @@ const Enrollment = ({ courseId, course }) => {
 
                     <div className='flex flex-col gap-[22px]'>
                         <div>
-                            <Button variant="enrolled">Enrolled</Button>
+                            {isCompleted ? <Button variant="completed">Completed</Button> : <Button variant="enrolled">Enrolled</Button>}
                         </div>
 
                         <ul className='flex flex-col gap-[22px]'>
@@ -172,12 +180,12 @@ const Enrollment = ({ courseId, course }) => {
                     <div className='flex flex-col gap-[40px]'>
                         <div className='flex flex-col gap-3'>
                             <span className='font-["Inter"] font-semibold text-[20px] leading-[24px] tracking-normal align-middle text-[#666666]'>
-                                {isCompleted ? 100 : enrollment?.progress}% Complete
+                                {isCompleted ? 100 : (enrollment?.progress || 0)}% Complete
                             </span>
                             <div className='w-full h-[23.45px] bg-[#EEEDFC] rounded-full'>
                                 <div
                                     className='h-[23.45px] bg-[#4F46E5] rounded-full transition-all'
-                                    style={{ width: `${isCompleted ? 100 : enrollment?.progress}%` }}
+                                    style={{ width: `${isCompleted ? 100 : (enrollment?.progress || 0)}%` }}
                                 />
                             </div>
                         </div>
@@ -301,7 +309,7 @@ const Enrollment = ({ courseId, course }) => {
                         <button
                             onClick={handleEnroll}
                             disabled={isPending}
-                            className='w-full h-[63px] rounded-[12px] p-[10px] bg-[#EEEDFC] text-[#B7B3F4] font-inter font-semibold text-[#B7B3F4] text-[20px] leading-[24px] tracking-normal text-center disabled:opacity-50'
+                            className={`w-full h-[63px] rounded-[12px] p-[10px] text-[20px] leading-[24px] tracking-normal text-center disabled:opacity-50 transition-colors ${allSelected ? 'bg-[#4F46E5] text-white' : 'bg-[#EEEDFC] text-[#B7B3F4]'}`}
                         >
                             {isPending ? 'Enrolling...' : 'Enroll Now'}
                         </button>

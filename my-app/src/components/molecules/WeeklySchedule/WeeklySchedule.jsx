@@ -11,7 +11,7 @@ const SCHEDULE_LABELS = {
     4: "Weekend",
 };
 
-const WeeklySchedule = ({ courseId, isOpen, onToggle,onSelect}) => {
+const WeeklySchedule = ({ courseId, isOpen, onToggle, onSelect }) => {
     const [selectedId, setSelectedId] = useState(null);
 
     const { data: schedules = [] } = useQuery({
@@ -21,52 +21,67 @@ const WeeklySchedule = ({ courseId, isOpen, onToggle,onSelect}) => {
 
     return (
         <div className='flex flex-col gap-[18px] w-full'>
-            <button onClick={onToggle} className='flex justify-between'>
+            <button onClick={onToggle} className='flex justify-between items-center'>
                 <div className='flex gap-2 items-center'>
-                    <Image
-                        className={`${(!isOpen && selectedId) && ''} ${(!isOpen && !selectedId) && '[filter:invert(56%)_sepia(26%)_saturate(0%)_hue-rotate(240deg)_brightness(93%)_contrast(85%)]'}`}
-                        src={`${selectedId ? '/Icon_Set_One_Done.svg' : '/Icon_Set_One.svg'}`}
-                        alt='One'
-                        width={28}
-                        height={28}
+                    <div
+                        className={`w-[28px] h-[28px] transition-colors duration-300 ${
+                            selectedId || isOpen ? 'bg-[#130E67]' : 'bg-[#8A8A8A]'
+                        }`}
+                        style={{
+                            maskImage: `url(${selectedId ? '/Icon_Set_One_Done.svg' : '/Icon_Set_One.svg'})`,
+                            WebkitMaskImage: `url(${selectedId ? '/Icon_Set_One_Done.svg' : '/Icon_Set_One.svg'})`,
+                            maskRepeat: 'no-repeat',
+                            maskSize: 'contain'
+                        }}
                     />
-                    <h2 className={`${(!isOpen && !selectedId) ? 'text-[#8A8A8A]' : 'text-[#130E67]'} ${(isOpen && selectedId) && 'text-[#130E67]'} font-inter font-semibold text-[24px] leading-[100%] tracking-normal`}>
+                    <h2 className={`font-inter font-semibold text-[24px] leading-none tracking-normal transition-colors ${
+                        (!isOpen && !selectedId) ? 'text-[#8A8A8A]' : 'text-[#130E67]'
+                    }`}>
                         Weekly Schedule
                     </h2>
                 </div>
-                <Image
-                    className={`${isOpen ? 'rotate-0' : 'rotate-180'} ${(!isOpen && !selectedId) && '[filter:invert(56%)_sepia(26%)_saturate(0%)_hue-rotate(240deg)_brightness(93%)_contrast(85%)]'}`}
-                    src={'/Icon_Title_Down.svg'}
-                    alt='ArrowDown'
-                    width={28}
-                    height={28}
+                <div
+                    className={`w-[28px] h-[28px] transition-all duration-300 ${
+                        isOpen ? 'rotate-0 bg-[#130E67]' : 'rotate-180 bg-[#8A8A8A]'
+                    }`}
+                    style={{
+                        maskImage: 'url(/Icon_Title_Down.svg)',
+                        WebkitMaskImage: 'url(/Icon_Title_Down.svg)',
+                        maskRepeat: 'no-repeat',
+                        maskSize: 'contain'
+                    }}
                 />
             </button>
 
             <div className={`gap-[12px] ${isOpen ? 'flex' : 'hidden'}`}>
-                {schedules.map((schedule) => {
-                    const isAvailable = schedule.days?.length > 0;
-                    const isSelected = selectedId === schedule.id;
+
+                {Object.keys(SCHEDULE_LABELS).map((idString) => {
+                    const id = parseInt(idString);
+                    const scheduleData = schedules.find(s => s.id === id);
+                    const isAvailable = !!scheduleData;
+                    const isSelected = selectedId === id;
 
                     return (
                         <button
-                            key={schedule.id}
+                            key={id}
+                            disabled={!isAvailable}
                             onClick={() => {
-                                if (!isAvailable) return;
-                                const newId = selectedId === schedule.id ? null : schedule.id;
+                                const newId = selectedId === id ? null : id;
                                 setSelectedId(newId);
                                 onSelect(newId);
                             }}
-                            disabled={!isAvailable}
-                            className={`rounded-[12px] w-[123.5px] p-[10px] h-[91px] hover:bg-[#DDDBFA] hover:border-[#958FEF] hover:text-[#4F46E5] border font-inter font-semibold text-[16px] leading-[100%] tracking-normal text-center transition-colors ${
-                                isSelected
-                                    ? 'bg-[#DDDBFA] border-[#958FEF] text-[#4F46E5]'
-                                    : isAvailable
-                                        ? 'bg-white border-[#D1D1D1] text-[#292929]  cursor-pointer'
-                                        : 'bg-[#F5F5F5] border-[#D1D1D1] text-[#D1D1D1] cursor-not-allowed'
-                            }`}
+                            className={`
+                                rounded-[12px] w-[123.5px] h-[91px] p-[10px] border 
+                                font-inter font-semibold text-[16px] leading-tight text-center transition-all
+                                
+                                ${isSelected
+                                ? 'bg-[#DDDBFA] border-[#958FEF] text-[#4F46E5]'
+                                : isAvailable
+                                    ? 'bg-white border-[#D1D1D1] text-[#292929] hover:bg-[#DDDBFA] hover:border-[#958FEF] hover:text-[#4F46E5] cursor-pointer'
+                                    : 'bg-[#F5F5F5] border-[#D1D1D1] text-[#D1D1D1] cursor-default!'}
+                            `}
                         >
-                            {SCHEDULE_LABELS[schedule.id]}
+                            {SCHEDULE_LABELS[id]}
                         </button>
                     );
                 })}
