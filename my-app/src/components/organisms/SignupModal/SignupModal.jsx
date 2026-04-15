@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { register as registerUser } from '@/lib/api';
+import Image from 'next/image';
 import useAuthStore from '@/store/useAuthStore';
 
 const steps = [
@@ -29,11 +30,17 @@ const steps = [
     }
 ];
 
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
 const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
     const { login, closeAll } = useAuthStore();
 
     const [active, setActive] = useState(0);
     const [attemptedStep, setAttemptedStep] = useState(null);
+    const [preview, setPreview] = useState(null);
+    const [avatarFile, setAvatarFile] = useState(null);
+    const [avatarError, setAvatarError] = useState(null);
+
 
     const { register, reset, handleSubmit, watch, trigger, formState: { errors } } = useForm({
         mode: "onSubmit",
@@ -55,6 +62,7 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
             formData.append('email', data.email);
             formData.append('password', data.password);
             formData.append('password_confirmation', data.confirmPassword);
+            if (avatarFile) formData.append('avatar', avatarFile);
             return registerUser(formData);
         },
         onSuccess: (data) => {
@@ -77,6 +85,9 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
         reset();
         closeAll();
         onClose();
+        setPreview(null);
+        setAvatarFile(null);
+        setAvatarError(null);
     };
 
     const handleNext = async () => {
@@ -95,7 +106,30 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
     };
 
     const currentFields = steps[active].fields;
+    const currentStep =steps[active];
     const isLastStep = active === steps.length - 1;
+    const isAvatarStep = currentStep.id === 'avatar';
+
+    const handleFile = (file) => {
+        if (!file) return;
+        if (!ALLOWED_TYPES.includes(file.type)) {
+            setAvatarError('Only JPG, PNG or WebP files are allowed.');
+            setPreview(null);
+            setAvatarFile(null);
+            return;
+        }
+        setAvatarError(null);
+        setAvatarFile(file);
+        setPreview(URL.createObjectURL(file));
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        handleFile(file);
+    };
+
+    const handleDragOver = (e) => e.preventDefault();
 
     return (
         <Modal isOpen={isOpen} onClose={handleClose}>
@@ -151,6 +185,66 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
                                 </div>
                             );
                         })}
+
+                        {currentStep.id === 'username' && (
+                            <div className='flex flex-col gap-3'>
+                                <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>
+                                    Upload Avatar
+                                </label>
+
+                                <label
+                                    onDrop={handleDrop}
+                                    onDragOver={handleDragOver}
+                                    className={`w-full justify-center items-center transition-all duration-500 ease-out flex flex-col rounded-[8px] border-[1.5px] gap-[8px] py-[30px] cursor-pointer hover:bg-[#EEEDFC] hover:border-[#DDDBFA] ${preview ? 'bg-[#EEEDFC] border-[#DDDBFA]' : 'bg-white border-[#D1D1D1]'} overflow-hidden relative min-h-[160px]`}
+                                >
+                                    {preview ? (
+                                        <div className="flex w-full px-[40px] items-center gap-[10px]">
+                                            <div className="relative w-[54px] h-[54px] rounded-full overflow-hidden">
+                                                <Image src={preview} alt="Preview" fill className="object-cover"/>
+                                            </div>
+                                            <div className='flex flex-col gap-0.5'>
+                                                <div className='flex flex-col'>
+                                                    <span className='font-["Inter"] h-[15px] font-normal text-[12px] leading-[100%] tracking-normal text-[#525252]'>
+                                                        {avatarFile?.name}
+                                                    </span>
+                                                    <span className='font-["Inter"] h-3 font-normal text-[10px] leading-[100%] tracking-normal text-[#ADADAD]'>
+                                                        Size - {(avatarFile?.size / (1024 * 1024)).toFixed(2)} MB
+                                                    </span>
+                                                </div>
+                                                <span className="font-inter h-3 font-medium text-[10px] leading-[100%] tracking-normal underline underline-offset-2 text-[#4F46E5]">
+                                                    Change
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <Image src={'/upload_vector.svg'} alt={'Upload'} width={34} height={34}/>
+                                            <div className='flex flex-col gap-1 text-center'>
+                                                <span className='text-sm font-semibold text-[#666666]'>
+                                                    Drag and drop or <span className='underline text-[#4F46E5]'>Upload file</span>
+                                                </span>
+                                                <span className='text-xs text-[#ADADAD]'>
+                                                    JPG, PNG or WebP
+                                                </span>
+                                            </div>
+                                        </>
+                                    )}
+
+                                    <input
+                                        type='file'
+                                        accept='image/jpeg,image/png,image/webp'
+                                        className='hidden'
+                                        onChange={(e) => handleFile(e.target.files[0])}
+                                    />
+                                </label>
+
+                                {avatarError && (
+                                    <span className='text-[#F4161A] font-["Inter"] font-normal text-[12px] leading-none'>
+                                        {avatarError}
+                                    </span>
+                                )}
+                            </div>
+                        )}
 
                         {isError && (
                             <p className='text-[#F4161A] text-sm text-center'>

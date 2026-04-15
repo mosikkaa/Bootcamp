@@ -85,7 +85,7 @@ const Sidebar = () => {
                                                 </span>
                                             </li>
                                             <li className='flex gap-2 capitalize'>
-                                                    <Image src={'/person_vector.svg'} alt={'person'} width={16} height={16}/>
+                                                    <Image src={`/${enrollment?.schedule?.sessionType?.name}_vector.svg`} alt={`/${enrollment?.schedule?.sessionType?.name}`} width={16} height={16}/>
                                                 <span className='font-["Inter"] font-normal text-[14px] leading-[26px] tracking-normal text-[#666666]'>
                                                     {enrollment.schedule?.sessionType?.name.replace(/[_]/g, ' ')}
                                                 </span>

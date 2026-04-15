@@ -3,9 +3,10 @@ import useAuthStore from '@/store/useAuthStore';
 import LoginModal from '@/components/organisms/LoginModal/LoginModal';
 import SignupModal from "@/components/organisms/SignupModal/SignupModal";
 import ProfileModal from "@/components/organisms/ProfileModal/ProfileModal";
+import FeedbackModal from "@/components/organisms/FeedbackModal/FeedbackModal";
 
 const AuthModals = () => {
-    const { isLoginOpen, isSignUpOpen, isProfileOpen, closeAll, closeProfile, openLogin, openSignUp } = useAuthStore();
+    const { isLoginOpen, isSignUpOpen, isProfileOpen, closeAll, closeProfile, openLogin, openSignUp,isFeedbackOpen,closeFeedback} = useAuthStore();
 
     return (
         <>
@@ -20,6 +21,7 @@ const AuthModals = () => {
                 onLoginOpen={openLogin}
             />
             <ProfileModal isOpen={isProfileOpen} onClose={closeProfile} />
+            <FeedbackModal isOpen={isFeedbackOpen} onClose={closeFeedback} />
         </>
     );
 }

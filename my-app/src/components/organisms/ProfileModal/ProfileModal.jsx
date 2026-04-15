@@ -11,7 +11,7 @@ import {useEffect, useState} from "react";
 const ProfileModal = ({ isOpen, onClose }) => {
     const { user, login, token,isLoggedIn } = useAuthStore();
 
-    const { register, handleSubmit, reset, watch, formState: { errors, isDirty, isValid } } = useForm({
+    const { register, handleSubmit, reset, watch, setValue, formState: { errors, isDirty, isValid } } = useForm({
         mode: "onSubmit",
         reValidateMode: "onChange",
         defaultValues: {
@@ -70,6 +70,17 @@ const ProfileModal = ({ isOpen, onClose }) => {
         setPreview(null);
     };
 
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files?.[0];
+        if (file) {
+            setValue('avatar', [file], { shouldValidate: true });
+        }
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
 
     return (
         <Modal isOpen={isOpen} onClose={handleClose}>
@@ -120,8 +131,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                             message: 'Name can only contain letters and spaces'
                                         }
                                     })}
-                                    className={`outline-none duration-300 transition-all ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#F5F5F5]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
-
+                                    className={`outline-none ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#F5F5F5] transition-all duration-500 border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
                                 />
                             </div>
                             {errors.full_name && <span className='text-[#F4161A] text-xs'>{errors.full_name.message}</span>}
@@ -210,7 +220,11 @@ const ProfileModal = ({ isOpen, onClose }) => {
                         <div className='flex flex-col gap-3'>
                             <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Upload Avatar</label>
 
-                            <label className={`w-full justify-center items-center transition-all duration-500 ease-out flex flex-col rounded-[8px] border-[1.5px] border-[#D1D1D1] border gap-[8px] py-[30px] cursor-pointer hover:bg-[#EEEDFC] hover:border-[#DDDBFA] focus:bg-[#DDDBFA] focus:border-[#B7B3F4] ${preview ? 'bg-[#EEEDFC] border-[#DDDBFA]' : 'bg-white'} transition-colors overflow-hidden relative min-h-[160px]`}>
+                            <label
+                                onDrop={handleDrop}
+                                onDragOver={handleDragOver}
+                                className={`w-full justify-center items-center transition-all duration-500 ease-out flex flex-col rounded-[8px] border-[1.5px] border-[#D1D1D1] border gap-[8px] py-[30px] cursor-pointer hover:bg-[#EEEDFC] hover:border-[#DDDBFA] focus:bg-[#DDDBFA] focus:border-[#B7B3F4] ${preview ? 'bg-[#EEEDFC] border-[#DDDBFA]' : 'bg-white'} transition-colors overflow-hidden relative min-h-[160px]`}
+                            >
 
                                 {preview ? (
                                     <div className="flex w-full px-[40px] items-center gap-[10px]">
