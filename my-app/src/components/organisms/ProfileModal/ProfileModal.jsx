@@ -6,13 +6,14 @@ import useAuthStore from '@/store/useAuthStore';
 import Modal from '@/components/atoms/Modal/Modal';
 import Button from '@/components/atoms/Button/Button';
 import Image from "next/image";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 const ProfileModal = ({ isOpen, onClose }) => {
     const { user, login, token,isLoggedIn } = useAuthStore();
 
     const { register, handleSubmit, reset, watch, formState: { errors, isDirty, isValid } } = useForm({
-        mode: "onChange",
+        mode: "onSubmit",
+        reValidateMode: "onChange",
         defaultValues: {
             full_name: '',
             email: user?.email,
@@ -20,6 +21,16 @@ const ProfileModal = ({ isOpen, onClose }) => {
             age: '',
         }
     });
+
+    const avatarFile = watch('avatar');
+    const [preview, setPreview] = useState(null);
+
+    useEffect(() => {
+        if (avatarFile && avatarFile.length > 0) {
+            const file = avatarFile[0];
+            setPreview(URL.createObjectURL(file));
+        }
+    }, [avatarFile]);
 
     const { data: userData, isLoading } = useQuery({
         queryKey: ["me"],
@@ -53,118 +64,189 @@ const ProfileModal = ({ isOpen, onClose }) => {
         },
     });
 
+    const handleClose = () => {
+        reset();
+        onClose();
+        setPreview(null);
+    };
+
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={handleClose}>
             <div className='w-[460px] rounded-[12px] p-[50px] flex flex-col gap-[24px] bg-white'>
 
                 <div className='flex flex-col gap-1.5 items-center'>
-                    <h1 className='text-xl font-bold'>Profile</h1>
+                    <h1 className='font-["Inter"] font-semibold text-[32px] leading-[100%] tracking-normal text-center text-[#141414]'>Profile</h1>
                 </div>
 
                 <div className='flex gap-3 items-center'>
-                    <Image
-                        src={userData?.avatar || userData?.profileComplete ? '/complete_vector.svg' : '/incomplete_vector.svg'}
-                        alt={'Avatar'}
-                        width={56}
-                        height={56}
-                        className='object-cover'
-                    />
-                    <div className='flex flex-col teims-center'>
-                        <span>{userData?.username}</span>
-                        <span className={`${userData?.profileComplete ? 'text-[#1DC31D]' : 'text-[#F4A316]'}`}>{userData?.profileComplete ? 'Profile is Complete' : 'Incomplete Profile'}</span>
+                    <button className='flex p-2 w-[56px] h-[56px] rounded-full cursor-pointer transition-all duration-300  border-[1.5px] border-transparent  hover:border-[#B7B3F4] bg-[#EEEDFC] relative items-center gap-2'>
+                        <Image
+                            src={userData?.avatar || '/user_vector.svg'}
+                            alt={user?.username}
+                            width={40}
+                            height={40}
+                            className='object-cover w-[full] h-[full] rounded-[8px]'
+                        />
+                        <Image src={userData?.profileComplete ? '/complete_ball_vector.svg' : '/incomplete_ball_vector.svg'} alt={user?.username} width={15} height={15} className={'absolute right-0 bottom-0'}/>
+                    </button>
+                    <div className='flex flex-col gap-1 items-start'>
+                        <span className='font-["inter"] font-semibold text-[20px] leading-[24px] tracking-normal align-middle text-[#0A0A0A]'>{userData?.username}</span>
+                        <span className={`pl-0.5 ${userData?.profileComplete ? 'text-[#1DC31D]' : 'text-[#F4A316]'} font-inter font-normal text-[10px] leading-[100%] tracking-normal`}>{userData?.profileComplete ? 'Profile is Complete' : 'Incomplete Profile'}</span>
                     </div>
                 </div>
 
                 <form onSubmit={handleSubmit((data) => mutate(data))} noValidate className='flex flex-col gap-4'>
 
-                    <div className='flex flex-col gap-[5px]'>
-                        <div className='flex flex-col gap-2'>
-                            <label className='text-sm font-medium'>Full Name</label>
-                            <input
-                                type='text'
-                                placeholder='username'
-                                {...register('full_name', { required: 'Full name is required' })}
-                                className='w-full border-[1.5px] border-gray-300 rounded-lg px-3 py-3 text-sm'
-                            />
-                        </div>
-                        {errors.full_name && <span className='text-[#F4161A] text-xs'>{errors.full_name.message}</span>}
-                    </div>
-
-                    <div className='flex flex-col gap-[5px]'>
-                        <div className='flex flex-col gap-2'>
-                            <label className='text-sm font-medium'>Email</label>
-                            <input
-                                type='text'
-                                placeholder='Email@gmail.com'
-                                {...register('email', { required: 'Email is required' })}
-                                className='w-full border-[1.5px] border-gray-300 rounded-lg px-3 py-3 text-sm'
-                            />
-                        </div>
-                        {errors.email && <span className='text-[#F4161A] text-xs'>{errors.email.message}</span>}
-                    </div>
-
-                    <div className='flex gap-2 w-full'>
-                        <div className='flex flex-col gap-1 w-[267px] shrink-0'>
-                            <label className='text-sm font-medium'>Mobile Number</label>
-                            <div className="relative flex items-center">
-                                <span className="absolute left-3 top-3.4 text-sm text-gray-500 pointer-events-none">+995</span>
-
+                    <div className='flex flex-col gap-3'>
+                        <div className='flex flex-col gap-[5px]'>
+                            <div className='flex flex-col gap-2'>
+                                <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Full Name</label>
                                 <input
-                                    type='tel'
-                                    placeholder=''
-                                    {...register('mobile_number', {
-                                        required: 'Mobile number is required',
+                                    type='text'
+                                    placeholder={userData?.username}
+                                    {...register('full_name', {
+                                        required: 'Name is required',
+                                        minLength: {
+                                            value: 3,
+                                            message: 'Name must be at least 3 characters'
+                                        },
+                                        maxLength: {
+                                            value: 50,
+                                            message: 'Name must not exceed 50 characters'
+                                        },
                                         pattern: {
-                                            value: /^[0-9]{9}$/,
-                                            message: 'Please enter a valid 9-digit number'
+                                            value: /^[A-Za-zა-ჰ\s]+$/,
+                                            message: 'Name can only contain letters and spaces'
                                         }
                                     })}
-                                    className='w-full border-[1.5px] border-gray-300 rounded-lg pl-12 pr-3 py-3 text-sm'
+                                    className={`outline-none ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#F5F5F5]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal`}
+
                                 />
                             </div>
-                            {errors.mobile_number && <span className='text-[#F4161A] text-xs'>{errors.mobile_number.message}</span>}
+                            {errors.full_name && <span className='text-[#F4161A] text-xs'>{errors.full_name.message}</span>}
                         </div>
 
-                        <div className='flex flex-col gap-1'>
-                            <label className={`text-sm font-medium ${errors.age ? 'text-[#F4161A]' : 'text-[#130E67]'}`}>Age</label>
-                            <input
-                                type='number'
-                                placeholder='25'
-                                {...register('age', {
-                                    required: 'Age is required',
-                                    min: { value: 1, message: 'Invalid age' },
-                                    max: { value: 120, message: 'Invalid age' }
-                                })}
-                                className={`w-full border-[1.5px] rounded-lg pl-3 pr-[15px] py-3 text-sm focus:outline-none transition-colors${errors.age ? 'border-[#F4161A] text-[#F4161A] focus:ring-[#F4161A]/20' : 'border-gray-300 text-black'}`}
-                            />
-                            {errors.age && <span className='text-[#F4161A] text-xs'>{errors.age.message}</span>}
+                        <div className='flex flex-col gap-[5px]'>
+                            <div className='flex flex-col gap-2'>
+                                <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Email</label>
+                                <input
+                                    type='email'
+                                    placeholder={userData?.email}
+                                    {...register('email')}
+                                    disabled
+                                    className='w-full bg-[#F5F5F5] border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#ADADAD]'
+                                />
+                            </div>
+                            {errors.email && <span className='text-[#F4161A] text-xs'>{errors.email.message}</span>}
                         </div>
-                    </div>
 
-                    <div className='flex flex-col gap-1'>
-                        <label className='text-sm font-medium text-[#130E67]'>Upload Avatar</label>
+                        <div className='flex gap-2 w-full'>
+                            <div className='flex flex-col gap-1 w-[267px] shrink-0'>
+                                <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Mobile Number</label>
+                                <div className="relative flex items-center">
+                                    <span className='absolute left-3 top-[17px] font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#D1D1D1]'>+995</span>
 
-                        <label className='w-full items-center flex flex-col rounded-[8px] border-[1.5px] border-[#D1D1D1] gap-[8px] py-[30px] bg-white'>
+                                    <input
+                                        type='tel'
+                                        {...register('mobile_number', {
+                                            required: 'Mobile number is required',
+                                            validate: (value) => {
+                                                const cleaned = value.replace(/\s/g, '');
 
-                            <Image src={'/upload_vector.svg'} alt={'Upload'} width={34} height={34}/>
+                                                if (!/^\d+$/.test(cleaned)) {
+                                                    return 'Please enter only numbers';
+                                                }
 
-                            <div className='flex flex-col gap-1 text-center'>
-                               <span className='text-sm font-semibold text-[#666666]'>
-                                   Drag and drop or <a className='cursor-pointer underline text-[#4F46E5]'>Upload file</a>
-                               </span>
-                                <span className='text-xs text-[#ADADAD]'>
-                                   JPG, PNG or WebP
-                               </span>
+                                                if (cleaned.length !== 9) {
+                                                    return 'Mobile number must be exactly 9 digits';
+                                                }
+
+                                                if (!cleaned.startsWith('5')) {
+                                                    return 'Georgian mobile numbers must start with 5';
+                                                }
+
+                                                return true;
+                                            }
+                                        })}
+                                        onInput={(e) => {
+                                            if (e.target.value.length > 9) {
+                                                e.target.value = e.target.value.slice(0, 9);
+                                            }
+                                        }}
+                                        className={`outline-none ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#FFFFFF]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[50px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal`}
+                                    />
+                                </div>
+                                {errors.mobile_number && <span className='text-[#F4161A] text-xs'>{errors.mobile_number.message}</span>}
                             </div>
 
-                            <input
-                                type='file'
-                                accept='image/*'
-                                className='hidden'
-                                {...register('avatar')}
-                            />
-                        </label>
+                            <div className='flex flex-col gap-1'>
+                                <label className={`font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D] ${errors.age ? 'text-[#F4161A]' : 'text-[#130E67]'}`}>Age</label>
+                                <input
+                                    type='number'
+                                    {...register('age', {
+                                        required: 'Age is required',
+                                        valueAsNumber: true,
+                                        min: {
+                                            value: 16,
+                                            message: 'You must be at least 16 years old to enroll'
+                                        },
+                                        max: {
+                                            value: 120,
+                                            message: 'Please enter a valid age'
+                                        }
+                                    })}
+                                    onInput={(e) => {
+                                        if (e.target.value.length > 3) {
+                                            e.target.value = e.target.value.slice(0, 3);
+                                        }
+                                    }}
+                                    className={`outline-none ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#FFFFFF]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal`}
+                                />
+                                {errors.age && <span className='text-[#F4161A] text-xs'>{errors.age.message}</span>}
+                            </div>
+                        </div>
+
+                        <div className='flex flex-col gap-3'>
+                            <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Upload Avatar</label>
+
+                            <label className='w-full items-center justify-center flex flex-col rounded-[8px] border-[1.5px] border-[#D1D1D1] border-dashed gap-[8px] py-[30px] bg-white cursor-pointer hover:bg-gray-50 transition-colors overflow-hidden relative min-h-[160px]'>
+
+                                {preview ? (
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div className="relative w-20 h-20 rounded-full overflow-hidden border border-[#D1D1D1]">
+                                            <Image
+                                                src={preview}
+                                                alt="Preview"
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        <span className="text-[12px] text-[#4F46E5] font-medium underline">Change Photo</span>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <Image src={'/upload_vector.svg'} alt={'Upload'} width={34} height={34}/>
+                                        <div className='flex flex-col gap-1 text-center'>
+                    <span className='text-sm font-semibold text-[#666666]'>
+                        Drag and drop or <span className='underline text-[#4F46E5]'>Upload file</span>
+                    </span>
+                                            <span className='text-xs text-[#ADADAD]'>
+                        JPG, PNG or WebP
+                    </span>
+                                        </div>
+                                    </>
+                                )}
+
+                                <input
+                                    type='file'
+                                    accept='image/*'
+                                    className='hidden'
+                                    {...register('avatar')}
+                                />
+                            </label>
+                        </div>
+
                     </div>
 
                     {isError && (
@@ -174,7 +256,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                     )}
 
                     <Button type='submit' variant='nextAuth' disabled={isPending}>
-                        {isPending ? 'Saving...' : 'Save Profile'}
+                        {isPending ? 'Saving...' : 'Update Profile'}
                     </Button>
 
                 </form>

@@ -1,6 +1,4 @@
 'use client'
-import Image from "next/image";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getWeeklySchedules } from "@/lib/api";
 
@@ -11,8 +9,7 @@ const SCHEDULE_LABELS = {
     4: "Weekend",
 };
 
-const WeeklySchedule = ({ courseId, isOpen, onToggle, onSelect }) => {
-    const [selectedId, setSelectedId] = useState(null);
+const WeeklySchedule = ({ courseId, isOpen, onToggle, onSelect, selectedId }) => {
 
     const { data: schedules = [] } = useQuery({
         queryKey: ["weekly-schedules", courseId],
@@ -21,7 +18,7 @@ const WeeklySchedule = ({ courseId, isOpen, onToggle, onSelect }) => {
 
     return (
         <div className='flex flex-col gap-[18px] w-full'>
-            <button onClick={onToggle} className='flex justify-between items-center'>
+            <button onClick={onToggle} className={`flex justify-between items-center ${isOpen && 'cursor-pointer'}`}>
                 <div className='flex gap-2 items-center'>
                     <div
                         className={`w-[28px] h-[28px] transition-colors duration-300 ${
@@ -54,7 +51,6 @@ const WeeklySchedule = ({ courseId, isOpen, onToggle, onSelect }) => {
             </button>
 
             <div className={`gap-[12px] ${isOpen ? 'flex' : 'hidden'}`}>
-
                 {Object.keys(SCHEDULE_LABELS).map((idString) => {
                     const id = parseInt(idString);
                     const scheduleData = schedules.find(s => s.id === id);
@@ -67,13 +63,11 @@ const WeeklySchedule = ({ courseId, isOpen, onToggle, onSelect }) => {
                             disabled={!isAvailable}
                             onClick={() => {
                                 const newId = selectedId === id ? null : id;
-                                setSelectedId(newId);
                                 onSelect(newId);
                             }}
                             className={`
                                 rounded-[12px] w-[123.5px] h-[91px] p-[10px] border 
-                                font-inter font-semibold text-[16px] leading-tight text-center transition-all
-                                
+                                font-inter font-semibold text-[16px] leading-tight text-center transition-all duration-500
                                 ${isSelected
                                 ? 'bg-[#DDDBFA] border-[#958FEF] text-[#4F46E5]'
                                 : isAvailable

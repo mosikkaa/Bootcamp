@@ -12,10 +12,10 @@ const Button = ({ children, onClick, variant }) => {
         nextAuth:'w-full h-[47px] rounded-[8px] p-[10px] bg-[#4F46E5] text-white cursor-pointer',
         enrolled:'rounded-[100px] p-4 bg-[#736BEA1A] font-["Inter"] font-semibold text-[20px] leading-[24px] tracking-normal text-[#736BEA] cursor-pointer',
         completed:'bg-[#1DC31D1A] rounded-[100px] p-4 text-[#1DC31D] font-["Inter"] font-semibold text-[20px] leading-[24px] tracking-normal cursor-pointer',
-        categories:'group flex items-center h-[39px] rounded-[12px] px-[12px] py-[8px] gap-[10px] border-transparent bg-[#FFFFFF] transition-all duration-300 ease-out hover:text-[#281ED2] hover:bg-[#DDDBFA] cursor-pointer',
+        categories:'group flex items-center h-[39px] rounded-[12px] px-[12px] py-[8px] gap-[10px] border border-transparent bg-[#FFFFFF] transition-all duration-300 ease-out hover:text-[#281ED2] hover:bg-[#DDDBFA] cursor-pointer',
         categoriesActive: 'group flex items-center  h-[39px] rounded-[12px] px-[12px] py-[8px] gap-[10px] bg-[#EEEDFC] transition-all duration-300 text-[#281ED2] border border-[#281ED2] cursor-pointer',
-        instructors:'group flex items-center rounded-[12px] px-[12px] py-[8px] gap-[10px] bg-[#FFFFFF] transition duration-300 ease-out hover:text-[#281ED2] hover:bg-[#DDDBFA] cursor-pointer',
-        instructorsActive:'group flex items-center rounded-[12px] px-[12px] py-[8px] gap-[10px] bg-[#EEEDFC] text-[#281ED2] border border-[#281ED2] cursor-pointer',
+        instructors:'group border border-transparent flex items-center rounded-[12px] px-[12px] py-[8px] gap-[10px] bg-[#FFFFFF] transition-all duration-300 ease-out hover:text-[#281ED2] hover:bg-[#DDDBFA] cursor-pointer',
+        instructorsActive:'group border flex items-center rounded-[12px] px-[12px] py-[8px] gap-[10px] bg-[#EEEDFC] text-[#281ED2] border border-[#281ED2] cursor-pointer',
         browseCard:'flex items-center h-[39px] rounded-[12px] px-[12px] py-[8px] gap-[6px] bg-[#F5F5F5] cursor-pointer'
     };
 

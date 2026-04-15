@@ -9,6 +9,12 @@ import useAuthStore from "@/store/useAuthStore";
 import Button from "@/components/atoms/Button/Button";
 import Image from "next/image";
 
+const SessionsT = {
+    "online": "Online",
+    "in_person": "In-Person",
+    "hybrid": "Hybrid"
+}
+
 const Enrollment = ({ courseId, course }) => {
     const queryClient = useQueryClient();
     const { isLoggedIn, user, openLogin, openProfile } = useAuthStore();
@@ -24,8 +30,8 @@ const Enrollment = ({ courseId, course }) => {
     const [isRetaken, setIsRetaken] = useState(false);
     const [showRating, setShowRating] = useState(false);
     const [localEnrollment, setLocalEnrollment] = useState(null);
+    const [selectedModifier, setSelectedModifier] = useState(0);
 
-    // LOGIC: Derived state ensures UI stays in sync without manual "isCompleted" state conflicts
     const enrollment = localEnrollment || course.enrollment;
     const isEnrolled = (!!enrollment) && !isRetaken;
     const isCompleted = isRetaken ? false : !!enrollment?.completedAt;
@@ -161,7 +167,7 @@ const Enrollment = ({ courseId, course }) => {
                                 </span>
                             </li>
                             <li className='flex gap-3 capitalize'>
-                                <Image src={'/person_vector.svg'} alt={'person'} width={24} height={24}/>
+                                <Image src={`/${enrollment?.schedule?.sessionType?.name}_vector.svg`} alt={'person'} width={24} height={24}/>
                                 <span className='font-["Inter"] font-medium text-[20px] leading-[26px] tracking-normal text-[#525252]'>
                                     {enrollment?.schedule?.sessionType?.name?.replace(/[_]/g, ' ')}
                                 </span>
@@ -191,7 +197,7 @@ const Enrollment = ({ courseId, course }) => {
                         </div>
                         <button
                             onClick={() => !isCompleted ? doComplete() : doRetake()}
-                            className='font-["Inter"] font-medium text-[20px] items-center justify-center leading-none tracking-normal text-white flex gap-[10px] rounded-[8px] py-[17px] px-[25px] bg-[#4F46E5]'
+                            className='font-["Inter"] cursor-pointer font-medium text-[20px] items-center justify-center leading-none tracking-normal text-white flex gap-[10px] rounded-[8px] py-[17px] px-[25px] bg-[#4F46E5]'
                         >
                             {!isCompleted ? 'Complete Course' : 'Retake Course'}
                             <Image
@@ -240,7 +246,15 @@ const Enrollment = ({ courseId, course }) => {
                         courseId={courseId}
                         isOpen={isSchedule}
                         onToggle={() => setScheduleOpen(!isSchedule)}
+                        selectedId={selectedScheduleId}
                         onSelect={(scheduleId) => {
+
+                            if (scheduleId !== selectedScheduleId) {
+                                setSelectedTimeSlotId(null);
+                                setSelectedSessionTypeId(null);
+                                setTimeSlotOpen(false);
+                                setSessionTypeOpen(false);
+                            }
                             setSelectedScheduleId(scheduleId);
                             if (scheduleId) setTimeSlotOpen(true);
                         }}
@@ -250,7 +264,13 @@ const Enrollment = ({ courseId, course }) => {
                         weeklyScheduleId={selectedScheduleId}
                         isOpen={isTimeSlot}
                         onToggle={() => setTimeSlotOpen(!isTimeSlot)}
+                        selectedId={selectedTimeSlotId}
                         onSelect={(slotId) => {
+
+                            if (slotId !== selectedTimeSlotId) {
+                                setSelectedSessionTypeId(null);
+                                setSessionTypeOpen(false);
+                            }
                             setSelectedTimeSlotId(slotId);
                             if (slotId) setSessionTypeOpen(true);
                         }}
@@ -261,7 +281,10 @@ const Enrollment = ({ courseId, course }) => {
                         timeSlotId={selectedTimeSlotId}
                         isOpen={isSessionType}
                         onToggle={() => setSessionTypeOpen(!isSessionType)}
-                        onSelect={(sessionId) => setSelectedSessionTypeId(sessionId)}
+                        selectedId={selectedSessionTypeId}
+                        onSelect={(courseScheduleId) => {
+                            setSelectedSessionTypeId(courseScheduleId);
+                        }}
                     />
 
                     <div className='w-[530px] h-[306px] flex flex-col gap-[32px] rounded-[12px] p-[40px] border border-[#F5F5F5] bg-white'>
@@ -309,7 +332,7 @@ const Enrollment = ({ courseId, course }) => {
                         <button
                             onClick={handleEnroll}
                             disabled={isPending}
-                            className={`w-full h-[63px] rounded-[12px] p-[10px] text-[20px] leading-[24px] tracking-normal text-center disabled:opacity-50 transition-colors ${allSelected ? 'bg-[#4F46E5] text-white' : 'bg-[#EEEDFC] text-[#B7B3F4]'}`}
+                            className={`w-full h-[63px] rounded-[12px] p-[10px] text-[20px] leading-[24px] cursor-pointer tracking-normal text-center disabled:opacity-50 transition-colors ${allSelected ? 'bg-[#4F46E5] text-white' : 'bg-[#EEEDFC] text-[#B7B3F4]'}`}
                         >
                             {isPending ? 'Enrolling...' : 'Enroll Now'}
                         </button>

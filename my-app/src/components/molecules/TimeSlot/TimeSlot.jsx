@@ -1,25 +1,24 @@
 'use client'
-import Image from "next/image";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getTimeSlots } from "@/lib/api";
 
+// Updated labels with your specific time requirements
 const TIME_SLOT_LABELS = {
-    1: "Morning",
-    2: "Afternoon",
-    3: "Evening",
+    1: { label: "Morning", time: "9:00 AM - 11:00 AM", icon: "Morning" },
+    2: { label: "Afternoon", time: "2:00 PM - 4:00 PM", icon: "Afternoon" },
+    3: { label: "Evening", time: "6:00 PM - 8:00 PM", icon: "Evening" },
 };
 
-const TimeSlot = ({ courseId, weeklyScheduleId, isOpen, onToggle,onSelect }) => {
-    const [selectedId, setSelectedId] = useState(null);
+const TimeSlot = ({ courseId, weeklyScheduleId, isOpen, onToggle, onSelect, selectedId }) => {
 
     const { data: slots = [] } = useQuery({
         queryKey: ["time-slots", courseId, weeklyScheduleId],
         queryFn: () => getTimeSlots(courseId, weeklyScheduleId),
-        enabled: !!weeklyScheduleId,
+        enabled: !!courseId && !!weeklyScheduleId,
     });
 
     const formatTime = (time) => {
+        if (!time) return "";
         const [hours, minutes] = time.split(':');
         const h = parseInt(hours);
         const ampm = h >= 12 ? 'PM' : 'AM';
@@ -29,7 +28,8 @@ const TimeSlot = ({ courseId, weeklyScheduleId, isOpen, onToggle,onSelect }) => 
 
     return (
         <div className='flex flex-col gap-[18px] w-full'>
-            <button onClick={onToggle} className='flex justify-between items-center'>
+
+            <button onClick={onToggle} className={`flex justify-between items-center ${isOpen && 'cursor-pointer'}`}>
                 <div className='flex gap-2 items-center'>
                     <div
                         className={`w-[28px] h-[28px] transition-colors duration-300 ${
@@ -45,7 +45,7 @@ const TimeSlot = ({ courseId, weeklyScheduleId, isOpen, onToggle,onSelect }) => 
                     <h2 className={`font-inter font-semibold text-[24px] leading-none tracking-normal transition-colors ${
                         (!isOpen && !selectedId) ? 'text-[#8A8A8A]' : 'text-[#130E67]'
                     }`}>
-                        Weekly Schedule
+                        Time Slot
                     </h2>
                 </div>
                 <div
@@ -61,40 +61,50 @@ const TimeSlot = ({ courseId, weeklyScheduleId, isOpen, onToggle,onSelect }) => 
                 />
             </button>
 
-            <div className={`gap-[12px] ${isOpen ? 'flex' : 'hidden'}`}>
-                {!weeklyScheduleId ? (
-                    <p className='text-[#8A8A8A] font-inter text-[14px]'>Please select a weekly schedule first</p>
-                ) : (
-                    slots.map((slot) => {
-                        const isSelected = selectedId === slot.id;
+            <div className={`justify-between ${isOpen ? 'flex' : 'hidden'}`}>
+                {Object.entries(TIME_SLOT_LABELS).map(([idString, info]) => {
+                    const id = parseInt(idString);
+                    const isSelected = selectedId === id;
 
-                        return (
-                            <button
-                                key={slot.id}
-                                onClick={() => {const newId = selectedId === slot.id ? null : slot.id;setSelectedId(newId);onSelect?.(newId);}}
-                                className={`rounded-[12px] group flex gap-3 items-center p-[15px] hover:bg-[#DDDBFA] hover:border-[#958FEF] hover:text-[#4F46E5] border font-inter font-semibold text-[16px] leading-[100%] tracking-normal text-center transition-colors ${
-                                    isSelected ? 'bg-[#DDDBFA] border-[#958FEF] text-[#4F46E5]' : 'bg-white border-[#D1D1D1] text-[#292929] cursor-pointer'
+                    const slotExists = slots.find(s => s.id === id);
+                    const isAvailable = !!weeklyScheduleId && !!slotExists;
+
+                    return (
+                        <button
+                            key={id}
+                            type="button"
+                            disabled={!isAvailable}
+                            onClick={() => onSelect?.(isSelected ? null : id)}
+                            className={`rounded-[12px] w-[172.76px] h-[61px] duration-500 border p-[15px] flex gap-3 items-center transition-colors ${
+                                isSelected
+                                    ? 'bg-[#DDDBFA] border-[#958FEF] text-[#4F46E5]'
+                                    : isAvailable
+                                        ? 'bg-white border-[#D1D1D1] text-[#292929] cursor-pointer hover:bg-[#DDDBFA]'
+                                        : 'bg-[#F5F5F5] border-[#D1D1D1] text-[#D1D1D1] cursor-default'
+                            }`}
+                        >
+                            <div
+                                className={`w-[26px] h-[26px] transition-colors duration-500 ${
+                                    isSelected ? 'bg-[#4F46E5]' : isAvailable ? 'bg-[#525252]' : 'bg-[#D1D1D1]'
                                 }`}
-                            >
-                                <div
-                                    className={`w-[26px] h-[26px] transition-colors  group-hover:bg-[#4F46E5] duration-300 ${
-                                        isSelected ? ('bg-[#4F46E5]') : 'bg-[#525252]'
-                                    }`}
-                                    style={{
-                                        maskImage: `url(/${TIME_SLOT_LABELS[slot.id]}_vector.svg)`,
-                                        WebkitMaskImage: `url(/${TIME_SLOT_LABELS[slot.id]}_vector.svg)`,
-                                        maskRepeat: 'no-repeat',
-                                        maskSize: 'contain'
-                                    }}
-                                />
-                                <div className='flex flex-col gap-0.5 items-start'>
-                                    <p className={`${isSelected ? 'text-[#4F46E5]' : 'text-[#292929]'}  group-hover:text-[#4F46E5] font-medium text-[14px] leading-none tracking-normal  font-inter`}>{TIME_SLOT_LABELS[slot.id]}</p>
-                                    <p className={`${isSelected ? 'text-[#4F46E5]' : 'text-[#292929]'}  group-hover:text-[#4F46E5] font-normal text-[10px] leading-none tracking-normal font-inter `}>{formatTime(slot.startTime)} - {formatTime(slot.endTime)}</p>
-                                </div>
-                            </button>
-                        );
-                    })
-                )}
+                                style={{
+                                    maskImage: `url(/${info.icon}_vector.svg)`,
+                                    WebkitMaskImage: `url(/${info.icon}_vector.svg)`,
+                                    maskRepeat: 'no-repeat',
+                                    maskSize: 'contain'
+                                }}
+                            />
+                            <div className='flex flex-col gap-0.5 items-start'>
+                                <p className='font-medium text-[14px] leading-none'>{info.label}</p>
+                                <p className='font-normal text-[10px] leading-none'>
+                                    {slotExists
+                                        ? `${formatTime(slotExists.startTime)} - ${formatTime(slotExists.endTime)}`
+                                        : info.time}
+                                </p>
+                            </div>
+                        </button>
+                    );
+                })}
             </div>
         </div>
     );

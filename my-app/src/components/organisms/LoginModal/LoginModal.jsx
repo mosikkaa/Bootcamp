@@ -10,6 +10,8 @@ const LoginModal = ({ isOpen, onClose, onSignUpOpen }) => {
     const { login, closeAll } = useAuthStore();
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        mode: "onSubmit",
+        reValidateMode: "onChange",
         defaultValues: {
             email: '',
             password: ''

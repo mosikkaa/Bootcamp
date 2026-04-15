@@ -36,6 +36,8 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
     const [attemptedStep, setAttemptedStep] = useState(null);
 
     const { register, reset, handleSubmit, watch, trigger, formState: { errors } } = useForm({
+        mode: "onSubmit",
+        reValidateMode: "onChange",
         defaultValues: {
             email: '',
             password: '',
