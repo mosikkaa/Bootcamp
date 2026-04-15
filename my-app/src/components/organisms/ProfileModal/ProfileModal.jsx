@@ -120,7 +120,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                             message: 'Name can only contain letters and spaces'
                                         }
                                     })}
-                                    className={`outline-none ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#F5F5F5]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal`}
+                                    className={`outline-none duration-300 transition-all ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#F5F5F5]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
 
                                 />
                             </div>
@@ -135,7 +135,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                     placeholder={userData?.email}
                                     {...register('email')}
                                     disabled
-                                    className='w-full bg-[#F5F5F5] border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#ADADAD]'
+                                    className='w-full bg-[#F5F5F5] transition-all duration-300 border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#ADADAD]'
                                 />
                             </div>
                             {errors.email && <span className='text-[#F4161A] text-xs'>{errors.email.message}</span>}
@@ -174,7 +174,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                                 e.target.value = e.target.value.slice(0, 9);
                                             }
                                         }}
-                                        className={`outline-none ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#FFFFFF]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[50px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal`}
+                                        className={`outline-none duration-300 transition-all ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#FFFFFF]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[50px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
                                     />
                                 </div>
                                 {errors.mobile_number && <span className='text-[#F4161A] text-xs'>{errors.mobile_number.message}</span>}
@@ -201,7 +201,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                             e.target.value = e.target.value.slice(0, 3);
                                         }
                                     }}
-                                    className={`outline-none ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#FFFFFF]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal`}
+                                    className={`outline-none duration-300 transition-all ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#FFFFFF]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
                                 />
                                 {errors.age && <span className='text-[#F4161A] text-xs'>{errors.age.message}</span>}
                             </div>
@@ -210,11 +210,11 @@ const ProfileModal = ({ isOpen, onClose }) => {
                         <div className='flex flex-col gap-3'>
                             <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Upload Avatar</label>
 
-                            <label className='w-full items-center justify-center flex flex-col rounded-[8px] border-[1.5px] border-[#D1D1D1] border-dashed gap-[8px] py-[30px] bg-white cursor-pointer hover:bg-gray-50 transition-colors overflow-hidden relative min-h-[160px]'>
+                            <label className={`w-full justify-center items-center transition-all duration-500 ease-out flex flex-col rounded-[8px] border-[1.5px] border-[#D1D1D1] border gap-[8px] py-[30px] cursor-pointer hover:bg-[#EEEDFC] hover:border-[#DDDBFA] focus:bg-[#DDDBFA] focus:border-[#B7B3F4] ${preview ? 'bg-[#EEEDFC] border-[#DDDBFA]' : 'bg-white'} transition-colors overflow-hidden relative min-h-[160px]`}>
 
                                 {preview ? (
-                                    <div className="flex flex-col items-center gap-2">
-                                        <div className="relative w-20 h-20 rounded-full overflow-hidden border border-[#D1D1D1]">
+                                    <div className="flex w-full px-[40px] items-center gap-[10px]">
+                                        <div className="relative w-[54px] h-[54px] rounded-full overflow-hidden">
                                             <Image
                                                 src={preview}
                                                 alt="Preview"
@@ -222,18 +222,31 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                                 className="object-cover"
                                             />
                                         </div>
-                                        <span className="text-[12px] text-[#4F46E5] font-medium underline">Change Photo</span>
+                                        <div className='flex flex-col gap-0.5'>
+                                            <div className='flex flex-col'>
+                                                <span className='font-["Inter"] h-[15px] font-normal text-[12px] leading-[100%] tracking-normal text-[#525252]'>
+                                                    {avatarFile[0].name}
+                                                </span>
+                                                <span className='font-["Inter"] h-3 font-normal text-[10px] leading-[100%] tracking-normal text-[#ADADAD]'>
+                                                     Size - {(avatarFile[0].size / (1024 * 1024)).toFixed(2)} MB
+                                                </span>
+
+                                            </div>
+
+                                            <span className="font-inter h-3 font-medium text-[10px] leading-[100%] tracking-normal underline decoration-solid underline-offset-[25%] decoration-0 text-[#4F46E5]">Change</span>
+
+                                        </div>
                                     </div>
                                 ) : (
                                     <>
                                         <Image src={'/upload_vector.svg'} alt={'Upload'} width={34} height={34}/>
                                         <div className='flex flex-col gap-1 text-center'>
-                    <span className='text-sm font-semibold text-[#666666]'>
-                        Drag and drop or <span className='underline text-[#4F46E5]'>Upload file</span>
-                    </span>
+                                            <span className='text-sm font-semibold text-[#666666]'>
+                                                Drag and drop or <span className='underline text-[#4F46E5]'>Upload file</span>
+                                            </span>
                                             <span className='text-xs text-[#ADADAD]'>
-                        JPG, PNG or WebP
-                    </span>
+                                                JPG, PNG or WebP
+                                            </span>
                                         </div>
                                     </>
                                 )}

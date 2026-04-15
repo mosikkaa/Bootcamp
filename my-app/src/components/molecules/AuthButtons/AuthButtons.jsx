@@ -17,15 +17,38 @@ const AuthButtons = () => {
     if (isLoggedIn) {
         return (
             <div className='flex gap-[15px] items-center'>
-                <button onClick={openProfile} className='flex p-2 w-[56px] h-[56px] rounded-full cursor-pointer transition-all duration-300  border-[1.5px] border-transparent  hover:border-[#B7B3F4] bg-[#EEEDFC] relative items-center gap-2'>
+                <button
+                    onClick={openProfile}
+                    className='relative w-[56px] h-[56px] cursor-pointer'
+                >
+
+                    <div className='w-full h-full rounded-full overflow-hidden border-[1.5px] border-transparent hover:border-[#B7B3F4] transition-all duration-300 bg-[#EEEDFC] flex items-center justify-center'>
+
+                        {userData?.avatar ? (
+                            <Image
+                                src={userData?.avatar}
+                                alt={user?.username}
+                                fill
+                                className='object-cover rounded-full'
+                            />
+                        ) : (
+                            <Image
+                                src='/user_vector.svg'
+                                alt={user?.username}
+                                width={40}
+                                height={40}
+                                className='object-cover'
+                            />
+                        )}
+                    </div>
+
                     <Image
-                        src={userData?.avatar || '/user_vector.svg'}
-                        alt={user?.username}
-                        width={40}
-                        height={40}
-                        className='object-cover w-[full] h-[full] rounded-[8px]'
+                        src={userData?.profileComplete ? '/complete_ball_vector.svg' : '/incomplete_ball_vector.svg'}
+                        alt='status'
+                        width={15}
+                        height={15}
+                        className='absolute -right-[0px] -bottom-[0px]'
                     />
-                    <Image src={userData?.profileComplete ? '/complete_ball_vector.svg' : '/incomplete_ball_vector.svg'} alt={user?.username} width={15} height={15} className={'absolute right-0 bottom-0'}/>
                 </button>
             </div>
         );
