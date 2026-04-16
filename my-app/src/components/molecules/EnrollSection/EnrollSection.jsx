@@ -31,6 +31,7 @@ const Enrollment = ({ courseId, course }) => {
     const [showRating, setShowRating] = useState(false);
     const [localEnrollment, setLocalEnrollment] = useState(null);
     const [selectedModifier, setSelectedModifier] = useState(0);
+    const [hoveredRating, setHoveredRating] = useState(0);
 
     const enrollment = localEnrollment || course.enrollment;
     const isEnrolled = (!!enrollment) && !isRetaken;
@@ -229,7 +230,7 @@ const Enrollment = ({ courseId, course }) => {
                         </button>
                     </div>
 
-                    {isCompleted && !isRetaken && showRating && !course.isRated && (
+                    {(isCompleted && showRating && !course.isRated) && (
                         <div className='relative w-[473px] items-center h-[172px] flex flex-col gap-[18px] rounded-[8px] px-[50px] py-[40px] bg-white'>
                             <Image
                                 className={'absolute right-3 top-3 cursor-pointer'}
@@ -247,12 +248,20 @@ const Enrollment = ({ courseId, course }) => {
                                     <button
                                         key={index}
                                         onClick={() => doReview(index)}
-                                        className="relative w-[32px] cursor-pointer h-[32px]"
+                                        onMouseEnter={() => setHoveredRating(index)}
+                                        onMouseLeave={() => setHoveredRating(0)}
+                                        className="relative cursor-pointer w-[46px] h-[46px]"
                                     >
                                         <img
-                                            src="/emptyStar_vector.svg"
+                                            src={
+                                                index < hoveredRating
+                                                    ? '/fillStar_vector.svg'
+                                                    : index === hoveredRating
+                                                        ? '/halfFill_vector.svg'
+                                                        : '/emptyStar_vector.svg'
+                                            }
                                             className="absolute inset-0 w-full h-full object-contain"
-                                            alt="Empty Star"
+                                            alt="Star"
                                         />
                                     </button>
                                 ))}

@@ -1,12 +1,15 @@
+'use client'
 import Modal from "@/components/atoms/Modal/Modal";
 import Image from 'next/image'
 import {useMutation} from "@tanstack/react-query";
 import {reviewCourse} from "@/lib/api";
 import useAuthStore from "@/store/useAuthStore";
+import {useState} from "react";
 
 
 const FeedbackModal = ({ isOpen, onClose,type,data}) => {
     const {openProfile} = useAuthStore()
+    const [hoveredRating, setHoveredRating] = useState(0);
 
     const { mutate: doReview } = useMutation({
         mutationFn: (rating) => reviewCourse(safeData.courseId, rating),
@@ -131,13 +134,21 @@ const FeedbackModal = ({ isOpen, onClose,type,data}) => {
                                      {[1, 2, 3, 4, 5].map((index) => (
                                          <button
                                              key={index}
-                                             onClick={() => {doReview(index);onClose();}}
+                                             onClick={() => { doReview(index); onClose(); }}
+                                             onMouseEnter={() => setHoveredRating(index)}
+                                             onMouseLeave={() => setHoveredRating(0)}
                                              className="relative cursor-pointer w-[46px] h-[46px]"
                                          >
                                              <img
-                                                 src="/emptyStar_vector.svg"
+                                                 src={
+                                                     index < hoveredRating
+                                                         ? '/fillStar_gray_vector.svg'
+                                                         : index === hoveredRating
+                                                             ? '/halfFill_gray_vector.svg'
+                                                             : '/emptyStar_gray_vector.svg'
+                                                 }
                                                  className="absolute inset-0 w-full h-full object-contain"
-                                                 alt="Empty Star"
+                                                 alt="Star"
                                              />
                                          </button>
                                      ))}
@@ -222,8 +233,6 @@ const FeedbackModal = ({ isOpen, onClose,type,data}) => {
                              Cancel
                          </button>
                      </div>
-
-
 
 
                  </div>
