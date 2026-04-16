@@ -29,7 +29,7 @@ const Filters = () => {
     return (
         <div className='w-[309px] flex flex-col gap-6'>
             <div className='flex flex-col gap-8'>
-                <div className='flex justify-between items-center'>
+                <div className='flex justify-between mt-1.5 items-center'>
                     <h1 className='font-["Inter"] font-semibold text-[40px] leading-none tracking-normal text-[#0A0A0A]'>Filter</h1>
                     <button onClick={clearAllFilters} className={`${activeFiltersCount===0 ? 'hidden' : 'flex'} group transition duration-300 hover:text-[#281ED2] items-center gap-[7px]`}>
                         <span className='font-medium text-[#8A8A8A] transition duration-300 group-hover:text-[#281ED2] text-[16px] leading-[24px] tracking-normal font-inter'>Clear All Filters</span>
