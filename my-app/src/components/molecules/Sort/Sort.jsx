@@ -31,7 +31,7 @@ const Sort = ({ showing, total }) => {
 
     return (
         <div className='flex justify-between w-full items-center'>
-            <p className='font-["Inter"] font-medium text-[16px] leading-[24px] tracking-normal text-[#666666]'>Showing {showing} out of {total}</p>
+            <p className='font-["Inter"] font-medium text-[16px] leading-[24px] tracking-normal text-[#666666]'>{total > 0  ? `Showing ${showing} out of ${total}` : 'No courses found'}</p>
             <div className='relative'>
                 <button
                     onClick={() => setOpen(!isOpen)}

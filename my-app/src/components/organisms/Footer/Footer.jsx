@@ -12,7 +12,7 @@ const Footer = () => {
 
 
      return(
-       <footer className='w-full flex border-t pt-[80px] px-[177px] pb-[20px] h-[334px] items-center justify-center border-[#D1D1D1]'>
+       <footer className='w-full bg-[#F5F5F5]  flex border-t pt-[80px] px-[177px] pb-[20px] h-[334px] items-center justify-center border-[#D1D1D1]'>
            <div className='w-full flex flex-col gap-[74px]'>
 
                <div className='flex justify-between'>

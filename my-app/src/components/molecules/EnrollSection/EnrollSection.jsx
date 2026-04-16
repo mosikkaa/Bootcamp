@@ -17,7 +17,7 @@ const SessionsT = {
 
 const Enrollment = ({ courseId, course }) => {
     const queryClient = useQueryClient();
-    const { isLoggedIn, user, openLogin, openProfile } = useAuthStore();
+    const { isLoggedIn, user, openLogin, openProfile,openFeedback } = useAuthStore();
 
     const [isSchedule, setScheduleOpen] = useState(true);
     const [isTimeSlot, setTimeSlotOpen] = useState(false);
@@ -61,12 +61,20 @@ const Enrollment = ({ courseId, course }) => {
             setEnrollError(null);
             setIsRetaken(false);
             setLocalEnrollment(data?.data || data);
+            openFeedback('enroll',{courseTitle: course.title})
             invalidate();
         },
         onError: (err) => {
             const data = err.response?.data;
             if (err.response?.status === 409 && data?.conflicts) {
                 setConflictData(data.conflicts);
+                const conflict = data.conflicts?.[0];
+                openFeedback('conflict', {
+                    courseTitle: conflict?.conflictingCourseName,
+                    courseDate: conflict?.schedule,
+                    courseId: courseId,
+                    handleForceEnroll: handleForceEnroll
+                });
             } else {
                 setEnrollError(data?.message || "Enrollment failed. Please try again.");
             }
@@ -89,6 +97,7 @@ const Enrollment = ({ courseId, course }) => {
                 }));
             }
             invalidate();
+            openFeedback('complete',{courseTitle: course.title,courseId:courseId, course:course,isRetaken:!course.isRated });
 
             if (!course.isRated) setShowRating(true);
         },
@@ -120,9 +129,20 @@ const Enrollment = ({ courseId, course }) => {
 
     const handleEnroll = () => {
         if (!isLoggedIn) { openLogin(); return; }
-        if (!user?.profileComplete) { openProfile(); return; }
+        if (!user?.profileComplete) { openFeedback('profile'); return; }
         if (!allSelected) {
             setEnrollError("Please select a weekly schedule, time slot, and session type.");
+            return;
+        }
+        if (conflictData) {
+            const conflict = conflictData?.[0];
+
+            openFeedback('conflict', {
+                courseTitle: conflict?.conflictingCourseName,
+                courseDate: conflict?.schedule,
+                courseId: courseId,
+                handleForceEnroll: handleForceEnroll
+            });
             return;
         }
         setEnrollError(null);
@@ -309,25 +329,6 @@ const Enrollment = ({ courseId, course }) => {
                             <p className='text-red-500 text-sm text-center'>{enrollError}</p>
                         )}
 
-                        {conflictData && (
-                            <div className='flex flex-col gap-[12px] bg-yellow-50 border border-yellow-300 rounded-[12px] p-[16px]'>
-                                <p className='text-yellow-700 font-medium text-sm'>Schedule conflict detected. Enroll anyway?</p>
-                                <div className='flex gap-2'>
-                                    <button
-                                        onClick={handleForceEnroll}
-                                        className='flex-1 h-[40px] rounded-[8px] bg-[#4F46E5] text-white font-inter font-medium text-[14px]'
-                                    >
-                                        Enroll Anyway
-                                    </button>
-                                    <button
-                                        onClick={() => setConflictData(null)}
-                                        className='flex-1 h-[40px] rounded-[8px] border border-[#D1D1D1] font-inter font-medium text-[14px]'
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
-                            </div>
-                        )}
 
                         <button
                             onClick={handleEnroll}

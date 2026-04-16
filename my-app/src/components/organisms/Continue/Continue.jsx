@@ -15,7 +15,7 @@ const Continue = () => {
         enabled: isLoggedIn,
     });
 
-    const visibleEnrollments = enrollments.slice(0, 4);
+    const visibleEnrollments = enrollments.slice(0, 3);
 
     if (isLoggedIn && enrollments.length === 0) return null;
 

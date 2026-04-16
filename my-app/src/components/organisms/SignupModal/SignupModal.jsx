@@ -42,7 +42,7 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
     const [avatarError, setAvatarError] = useState(null);
 
 
-    const { register, reset, handleSubmit, watch, trigger, formState: { errors } } = useForm({
+    const { register, reset, handleSubmit, watch,clearErrors,setError, trigger, formState: { errors } } = useForm({
         mode: "onSubmit",
         reValidateMode: "onChange",
         defaultValues: {
@@ -70,7 +70,30 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
             handleClose();
         },
         onError: (err) => {
-            console.log("error response:", err.response?.data);
+            const serverErrors = err.response?.data?.errors;
+            if (serverErrors) {
+                const fieldToStep = {
+                    email: 0,
+                    password: 1,
+                    confirmPassword: 1,
+                    username: 2,
+                };
+
+                let earliestStep = null;
+
+                Object.entries(serverErrors).forEach(([field, messages]) => {
+                    setError(field, { type: 'server', message: messages[0] });
+                    const stepIndex = fieldToStep[field];
+                    if (earliestStep === null || stepIndex < earliestStep) {
+                        earliestStep = stepIndex;
+                    }
+                });
+
+                if (earliestStep !== null) {
+                    setActive(earliestStep);
+                    setAttemptedStep(earliestStep);
+                }
+            }
         }
     });
 
@@ -134,6 +157,11 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
     return (
         <Modal isOpen={isOpen} onClose={handleClose}>
             <div className='w-[460px] rounded-[12px] p-[50px] gap-[16px] flex flex-col bg-white'>
+                {active > 0 && (
+                    <Image src={'/previous.svg'} alt={'previous'} height={32} width={16}
+                           className="cursor-pointer absolute top-3 left-4"
+                           onClick={() => setActive(prev => prev - 1)}/>
+                )}
                 <div className='flex flex-col gap-[24px]'>
 
                     <div className='flex flex-col gap-1.5 items-center'>
@@ -243,10 +271,12 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
                                         {avatarError}
                                     </span>
                                 )}
+
+
                             </div>
                         )}
 
-                        {isError && (
+                        {isError && !error?.response?.data?.errors && (
                             <p className='text-[#F4161A] text-sm text-center'>
                                 {error?.response?.data?.message || 'Registration failed. Please try again.'}
                             </p>

@@ -9,7 +9,7 @@ import Image from "next/image";
 import {useEffect, useState} from "react";
 
 const ProfileModal = ({ isOpen, onClose }) => {
-    const { user, login, token,isLoggedIn } = useAuthStore();
+    const { user, login, token,isLoggedIn,openFeedback } = useAuthStore();
 
     const { register, handleSubmit, reset, watch, setValue, formState: { errors, isDirty, isValid } } = useForm({
         mode: "onSubmit",
@@ -66,6 +66,9 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
     const handleClose = () => {
         reset();
+        const isIncomplete = !userData?.profileComplete;
+
+        if (isIncomplete) openFeedback('profile');
         onClose();
         setPreview(null);
     };
@@ -91,15 +94,37 @@ const ProfileModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className='flex gap-3 items-center'>
-                    <button className='flex p-2 w-[56px] h-[56px] rounded-full cursor-pointer transition-all duration-300  border-[1.5px] border-transparent  hover:border-[#B7B3F4] bg-[#EEEDFC] relative items-center gap-2'>
+                    <button
+                        className='relative w-[56px] h-[56px] cursor-default'
+                    >
+
+                        <div className='w-full h-full rounded-full overflow-hidden border-[1.5px] border-transparent hover:border-[#B7B3F4] transition-all duration-300 bg-[#EEEDFC] flex items-center justify-center'>
+
+                            {userData?.avatar ? (
+                                <Image
+                                    src={userData?.avatar}
+                                    alt={user?.username}
+                                    fill
+                                    className='object-cover rounded-full'
+                                />
+                            ) : (
+                                <Image
+                                    src='/user_vector.svg'
+                                    alt={user?.username}
+                                    width={40}
+                                    height={40}
+                                    className='object-cover'
+                                />
+                            )}
+                        </div>
+
                         <Image
-                            src={userData?.avatar || '/user_vector.svg'}
-                            alt={user?.username}
-                            width={40}
-                            height={40}
-                            className='object-cover w-[full] h-[full] rounded-[8px]'
+                            src={userData?.profileComplete ? '/complete_ball_vector.svg' : '/incomplete_ball_vector.svg'}
+                            alt='status'
+                            width={15}
+                            height={15}
+                            className='absolute -right-[0px] -bottom-[0px]'
                         />
-                        <Image src={userData?.profileComplete ? '/complete_ball_vector.svg' : '/incomplete_ball_vector.svg'} alt={user?.username} width={15} height={15} className={'absolute right-0 bottom-0'}/>
                     </button>
                     <div className='flex flex-col gap-1 items-start'>
                         <span className='font-["inter"] font-semibold text-[20px] leading-[24px] tracking-normal align-middle text-[#0A0A0A]'>{userData?.username}</span>
@@ -115,7 +140,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                 <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Full Name</label>
                                 <input
                                     type='text'
-                                    placeholder={userData?.username}
+                                    placeholder={userData?.fullName}
                                     {...register('full_name', {
                                         required: 'Name is required',
                                         minLength: {
@@ -127,11 +152,16 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                             message: 'Name must not exceed 50 characters'
                                         },
                                         pattern: {
-                                            value: /^[A-Za-zა-ჰ\s]+$/,
+                                            value: /^[A-Za-zა-ჰ\s'-]+$/,
                                             message: 'Name can only contain letters and spaces'
+                                        },
+                                        validate: (value) => {
+                                            if (!value || !value.trim()) return 'Name is required';
+
+                                            return true;
                                         }
                                     })}
-                                    className={`outline-none ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#F5F5F5] transition-all duration-500 border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
+                                    className={`outline-none ${errors.full_name ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#F5F5F5] transition-all duration-500 border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
                                 />
                             </div>
                             {errors.full_name && <span className='text-[#F4161A] text-xs'>{errors.full_name.message}</span>}
@@ -142,6 +172,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                 <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Email</label>
                                 <input
                                     type='email'
+                                    value={userData?.email || ''}
                                     placeholder={userData?.email}
                                     {...register('email')}
                                     disabled
@@ -162,6 +193,8 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                         {...register('mobile_number', {
                                             required: 'Mobile number is required',
                                             validate: (value) => {
+                                                if (!value) return 'Mobile number is required';
+
                                                 const cleaned = value.replace(/\s/g, '');
 
                                                 if (!/^\d+$/.test(cleaned)) {
@@ -179,6 +212,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                                 return true;
                                             }
                                         })}
+                                        placeholder={userData?.mobileNumber || ''}
                                         onInput={(e) => {
                                             if (e.target.value.length > 9) {
                                                 e.target.value = e.target.value.slice(0, 9);
@@ -196,7 +230,15 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                     type='number'
                                     {...register('age', {
                                         required: 'Age is required',
-                                        valueAsNumber: true,
+                                        validate: (value) => {
+                                            if (value === '' || value === null) return 'Age is required';
+
+                                            const num = Number(value);
+
+                                            if (isNaN(num)) return 'Age must be a number';
+
+                                            return true;
+                                        },
                                         min: {
                                             value: 16,
                                             message: 'You must be at least 16 years old to enroll'
@@ -206,12 +248,13 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                             message: 'Please enter a valid age'
                                         }
                                     })}
+                                    placeholder={userData?.age || ''}
                                     onInput={(e) => {
                                         if (e.target.value.length > 3) {
                                             e.target.value = e.target.value.slice(0, 3);
                                         }
                                     }}
-                                    className={`outline-none duration-300 transition-all ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#FFFFFF]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
+                                    className={`outline-none duration-300 transition-all ${errors.age  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#FFFFFF]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
                                 />
                                 {errors.age && <span className='text-[#F4161A] text-xs'>{errors.age.message}</span>}
                             </div>

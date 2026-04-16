@@ -29,7 +29,7 @@ const BrowsePage = () => {
     const currentPage = data?.meta?.currentPage ?? 1;
 
     return (
-        <main className="w-full bg-[#F5F5F5] flex flex-col px-[177px] gap-[62px] pt-16 pb-20">
+        <main className="w-full bg-[#F5F5F5]! flex flex-col px-[177px] gap-[62px] pt-16 pb-20">
             <LocationV1 />
 
             <div className="flex gap-[90px]">

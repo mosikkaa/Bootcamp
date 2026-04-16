@@ -16,8 +16,17 @@ const useAuthStore = create(
             openSidebar: () => set({ isSidebarOpen: true }),
             closeSidebar: () => set({ isSidebarOpen: false }),
             closeProfile: () => set({ isProfileOpen: false }),
-            openFeedback: () => set({ isFeedbackOpen: true }),
-            closeFeedback: () => set({ isFeedbackOpen: false }),
+            openFeedback: (type,data=null) => set({
+                isFeedbackOpen: true,
+                feedbackType: type,
+                feedbackData: data
+            }),
+            closeFeedback: () => set({
+                isFeedbackOpen: false,
+                feedbackType: null,
+                feedbackData: null
+            }),
+            feedbackType: null,
 
             token: null,
             user: null,
