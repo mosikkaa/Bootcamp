@@ -27,7 +27,7 @@ const Continue = () => {
                    <h1 className='font-["Inter"] font-semibold text-[40px] leading-none tracking-normal text-[#0A0A0A]'>Continue Learning</h1>
                    <span className='font-["Inter"] font-medium text-[18px] leading-none tracking-normal text-[#3D3D3D]'>Pick up where you left</span>
                </div>
-               <a onClick={openSidebar} className='cursor-pointer font-["Inter"] font-medium text-[20px] leading-none tracking-normal underline decoration-solid text-[#4F46E5]'>See all</a>
+               <a onClick={isLoggedIn ? openSidebar : openLogin} className='cursor-pointer font-["Inter"] font-medium text-[20px] leading-none tracking-normal underline decoration-solid text-[#4F46E5]'>See all</a>
            </div>
 
            <div className={`${visibleEnrollments.length === 3 ? 'justify-between' : 'justify-start gap-6'} relative flex`}>
