@@ -175,7 +175,7 @@ const FeedbackModal = ({ isOpen, onClose,type,data}) => {
                                  safeData.handleForceEnroll();
                                  onClose();
                              }}
-                             className='font-["Inter"] font-medium text-[16px] cursor-pointer text-[#4F46E5] leading-[24px] h-[58px] w-full rounded-[8px] flex items-center justify-center gap-[2px] pt-[12px] pr-[16px] pb-[12px] pl-[16px] border-2 border-[#958FEF]'
+                             className='font-["Inter"] font-medium text-[16px] hover:bg-[#DDDBFA] hover:border-[#958FEF] transition-all duration-300 cursor-pointer text-[#4F46E5] leading-[24px] h-[58px] w-full rounded-[8px] flex items-center justify-center gap-[2px] pt-[12px] pr-[16px] pb-[12px] pl-[16px] border-2 border-[#958FEF]'
                          >
                              Enroll Anyway
                          </button>
@@ -211,7 +211,7 @@ const FeedbackModal = ({ isOpen, onClose,type,data}) => {
                                  onClose()
                                  openProfile()
                              }}
-                             className='font-["Inter"] font-medium text-[16px] cursor-pointer text-[#4F46E5] leading-[24px] h-[58px] w-full rounded-[8px] flex items-center justify-center gap-[2px] pt-[12px] pr-[16px] pb-[12px] pl-[16px] border-2 border-[#958FEF]'
+                             className='font-["Inter"] font-medium hover:bg-[#DDDBFA] hover:border-[#958FEF] transition-all duration-300 text-[16px] cursor-pointer text-[#4F46E5] leading-[24px] h-[58px] w-full rounded-[8px] flex items-center justify-center gap-[2px] pt-[12px] pr-[16px] pb-[12px] pl-[16px] border-2 border-[#958FEF]'
                          >
                              Complete Profile
                          </button>

@@ -68,7 +68,7 @@ const Slider = () => {
                             src={slide.bg}
                             alt={slide.title}
                             fill
-                            className='object-cover'
+                            className='object-cover relative'
                             priority
                         />
 

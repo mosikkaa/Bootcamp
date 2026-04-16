@@ -25,7 +25,7 @@ const steps = [
     {
         id: 'username',
         fields: [
-            { field: 'username', label: 'Username*', type: 'text', placeholder: 'johndoe', validation: { required: 'Username is required' } }
+            { field: 'username', label: 'Username*', type: 'text', placeholder: 'Username', validation: { required: 'Username is required' } }
         ]
     }
 ];
@@ -108,6 +108,10 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
         reset();
         closeAll();
         onClose();
+        setShowPassword({
+            password: false,
+            confirmPassword: false,
+        });
         setPreview(null);
         setAvatarFile(null);
         setAvatarError(null);
@@ -120,6 +124,10 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
             setAttemptedStep(active);
             return;
         }
+        setShowPassword({
+            password: false,
+            confirmPassword: false,
+        });
         setAttemptedStep(null);
         setActive(prev => prev + 1);
     };
@@ -132,6 +140,10 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
     const currentStep =steps[active];
     const isLastStep = active === steps.length - 1;
     const isAvatarStep = currentStep.id === 'avatar';
+    const [showPassword, setShowPassword] = useState({
+        password: false,
+        confirmPassword: false,
+    });
 
     const handleFile = (file) => {
         if (!file) return;
@@ -165,8 +177,8 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
                 <div className='flex flex-col gap-[24px]'>
 
                     <div className='flex flex-col gap-1.5 items-center'>
-                        <h1 className='font-["Inter"] font-semibold text-[32px] leading-none tracking-normal text-center text-[#141414]'>Create Account</h1>
-                        <span className='font-["Inter"] font-medium text-[14px] leading-none tracking-normal text-center text-[#666666]'>Join and start learning today</span>
+                        <h1 className='font-["Inter"] font-semibold h-[39px] text-[32px] leading-none tracking-normal text-center text-[#141414]'>Create Account</h1>
+                        <span className='font-["Inter"] font-medium h-[17px] text-[14px] leading-none tracking-normal text-center text-[#666666]'>Join and start learning today</span>
                     </div>
 
                     <div className='flex justify-between items-center'>
@@ -178,6 +190,10 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
                     <form onSubmit={handleSubmit(onSubmit)} noValidate className='flex flex-col gap-4'>
 
                         {currentFields.map((step) => {
+
+                            const isPassword = step.field === 'password';
+                            const isConfirm = step.field === 'confirmPassword';
+
                             const { onChange, ...rest } = register(
                                 step.field,
                                 step.field === 'confirmPassword'
@@ -190,20 +206,33 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
 
                             return (
                                 <div key={step.field} className='flex flex-col gap-[5px]'>
-                                    <div className='flex flex-col gap-2'>
+                                    <div className='flex flex-col relative gap-2'>
                                         <label className={`font-["Inter"] font-medium text-[14px] leading-none tracking-normal ${errors[step.field] && attemptedStep === active ? 'text-[#F4161A]' : 'text-[#3D3D3D]'}`}>
                                             {step.label}
                                         </label>
                                         <input
-                                            type={step.type}
+                                            type={
+                                                isPassword
+                                                    ? showPassword.password
+                                                        ? 'text'
+                                                        : 'password'
+                                                    : isConfirm
+                                                        ? showPassword.confirmPassword
+                                                            ? 'text'
+                                                            : 'password'
+                                                        : step.type
+                                            }
                                             placeholder={step.placeholder}
                                             {...rest}
                                             onChange={(e) => {
                                                 onChange(e);
                                                 setAttemptedStep(null);
                                             }}
-                                            className={`w-[360px] h-[48px] border-[1.5px] border-solid rounded-[8px] focus:placeholder:translate-x-[4px] transition-all duration-300 flex items-center gap-[10px] pt-[12px] pr-[15px] pb-[12px] pl-[13px] placeholder:text-[#8A8A8A] focus:placeholder:text-[#F5F5F5] font-["Inter"] font-medium text-[14px] leading-none tracking-normal align-middle text-[#3D3D3D] outline-none ${errors[step.field] && attemptedStep === active ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:border-[#8A8A8A]'}`}
+                                            className={`w-[360px] h-[48px] border-[1.5px] border-solid ${((step.label === 'Password*') || (step.label === 'Confirm Password*')) && 'pr-[45px]'  } rounded-[8px] focus:placeholder:translate-x-[4px] transition-all duration-300 flex items-center gap-[10px] pt-[12px] pr-[15px] pb-[12px] pl-[13px] placeholder:text-[#8A8A8A] focus:placeholder:text-[#F5F5F5] font-["Inter"] font-medium text-[14px] leading-none tracking-normal align-middle text-[#3D3D3D] outline-none ${errors[step.field] && attemptedStep === active ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:border-[#8A8A8A]'}`}
                                         />
+                                        {step.label === 'Password*' && (<Image onClick={() => setShowPassword(prev => ({...prev, [step.field]: !prev[step.field],}))} className='absolute cursor-pointer top-9 right-[15px]' src={'/login_eye.svg'} alt={'visibility'} width={22} height={22}/>)}
+                                        {step.label === 'Confirm Password*' && (<Image onClick={() => setShowPassword(prev => ({...prev, [step.field]: !prev[step.field],}))} className='absolute cursor-pointer top-9 right-[15px]' src={'/eye_closed.svg'} alt={'visibility'} width={22} height={22}/>)}
+
                                     </div>
                                     {attemptedStep === active && errors[step.field] && (
                                         <span className='text-[#F4161A] font-["Inter"] font-normal text-[12px] leading-none tracking-n'>
@@ -286,9 +315,9 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
                             <button
                                 type='submit'
                                 disabled={isPending}
-                                className='w-full bg-indigo-500 text-white py-3 rounded-xl font-medium hover:bg-indigo-600 disabled:opacity-50'
+                                className='font-["Inter"] font-medium text-base leading-6 tracking-normal text-center text-white w-full h-[47px] rounded-[8px] p-[10px] bg-[#4F46E5] text-white cursor-pointer'
                             >
-                                {isPending ? 'Creating Account...' : 'Create Account'}
+                                {isPending ? 'Signing Up' : 'Sign Up'}
                             </button>
                         ) : (
                             <Button variant="nextAuth" type='button' onClick={handleNext}>

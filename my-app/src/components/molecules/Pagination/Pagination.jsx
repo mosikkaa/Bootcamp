@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image'
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
@@ -54,20 +55,20 @@ const Pagination = ({ totalPages = 1 }) => {
                     handlePageChange(activePage - 1);
                 }}
                 disabled={activePage <= 1}
-                className={`w-[40px] h-[40px] flex items-center justify-center rounded-[4px] bg-white border border-[#D1D1D1] ${
+                className={`w-[40px] h-[40px] transition-all font-["Inter"] font-medium text-[16px] leading-[24px] tracking-normal text-center duration-300 flex items-center justify-center rounded-[4px] bg-white border border-[#D1D1D1] ${
                     activePage <= 1
                         ? "text-[#D1D1D1] cursor-default!"
-                        : "text-[#4F46E5] bg-white hover:border-[#B7B3F4] hover:bg-[#DDDBFA] focus:text-white focus:bg-[#281ED2] focus:border-[#4F46E5]"
+                        : "text-[#4F46E5] bg-white hover:border-[#B7B3F4] hover:bg-[#DDDBFA] active:text-white active:bg-[#281ED2] active:border-[#4F46E5]"
                 }`}
             >
-                ←
+                <div className={`w-4 h-8 ${activePage <= 1 ?  "bg-[#D1D1D1]" : 'bg-[#4F46E5] active:bg-white'} mask-[url('/previous_pagination.svg')] mask-no-repeat mask-center mask-contain`}/>
             </button>
 
             {pages.map((page, index) => (
                 <button
                     key={index}
                     onClick={() => handlePageChange(page)}
-                    className={`w-[40px] h-[40px] flex items-center justify-center hover:border-[#B7B3F4] hover:bg-[#DDDBFA] cursor-pointer duration-500 transition-all ease-out rounded-[4px] border border-[#D1D1D1] ${
+                    className={`w-[40px] h-[40px] transition-all duration-300 flex items-center justify-center font-["Inter"] font-medium text-[16px] leading-[24px] tracking-normal text-center hover:border-[#B7B3F4] hover:bg-[#DDDBFA] cursor-pointer duration-500 transition-all ease-out rounded-[4px] border border-[#D1D1D1] ${
                         page === activePage
                             ? "bg-[#281ED2] border-[#4F46E5] text-white"
                             : page === "..."
@@ -85,13 +86,13 @@ const Pagination = ({ totalPages = 1 }) => {
                     handlePageChange(activePage + 1);
                 }}
                 disabled={activePage >= totalPages}
-                className={`w-[40px] h-[40px] flex items-center font-["Inter"] font-medium text-[16px] leading-[24px] tracking-normal text-center justify-center rounded-[4px] duration-500 transition-all ease-out border border-[#D1D1D1] ${
+                className={`w-[40px] h-[40px] transition-all duration-300 flex items-center font-["Inter"] font-medium text-[16px] leading-[24px] tracking-normal text-center justify-center rounded-[4px] duration-500 transition-all ease-out border border-[#D1D1D1] ${
                     activePage >= totalPages
                         ? "text-[#D1D1D1] cursor-default!"
-                        : "text-[#4F46E5] bg-white hover:border-[#B7B3F4] hover:bg-[#DDDBFA] focus:text-white focus:bg-[#281ED2] focus:border-[#4F46E5]"
+                        : "text-[#4F46E5] bg-white hover:border-[#B7B3F4] hover:bg-[#DDDBFA] active:text-white active:bg-[#281ED2] active:border-[#4F46E5]"
                 }`}
             >
-                →
+                <div className={`w-4 h-8 rotate-180 ${activePage >= totalPages ?  "bg-[#D1D1D1]" : 'bg-[#4F46E5] active:bg-white'} mask-[url('/previous_pagination.svg')] mask-no-repeat mask-center mask-contain`}/>
             </button>
         </div>
     );

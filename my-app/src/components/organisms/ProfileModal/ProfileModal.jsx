@@ -9,7 +9,7 @@ import Image from "next/image";
 import {useEffect, useState} from "react";
 
 const ProfileModal = ({ isOpen, onClose }) => {
-    const { user, login, token,isLoggedIn,openFeedback } = useAuthStore();
+    const { user, login, token,isLoggedIn,openFeedback,isProfileOpen} = useAuthStore();
 
     const { register, handleSubmit, reset, watch, setValue, formState: { errors, isDirty, isValid } } = useForm({
         mode: "onSubmit",
@@ -39,15 +39,15 @@ const ProfileModal = ({ isOpen, onClose }) => {
     });
 
     useEffect(() => {
-        if (userData?.data) {
+        if (userData) {
             reset({
-                full_name: userData?.data.fullName || '',
-                email: userData?.data.email || '',
-                mobile_number: userData?.data.mobileNumber?.replace('+995', '') || '',
-                age: userData?.data.age || '',
+                full_name: userData.fullName || '',
+                email: userData.email || '',
+                mobile_number: userData.mobileNumber?.replace('+995', '') || '',
+                age: userData.age || '',
             });
         }
-    }, [userData?.data, reset]);
+    }, [userData, reset]);
 
     const { mutate, isPending, isError, error } = useMutation({
         mutationFn: (data) => {
@@ -67,7 +67,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
     const handleClose = () => {
         reset();
         const isIncomplete = !userData?.profileComplete;
-
+        setIsEditingName(false);
         if (isIncomplete) openFeedback('profile');
         onClose();
         setPreview(null);
@@ -84,6 +84,8 @@ const ProfileModal = ({ isOpen, onClose }) => {
     const handleDragOver = (e) => {
         e.preventDefault();
     };
+
+    const [isEditingName, setIsEditingName] = useState(false);
 
     return (
         <Modal isOpen={isOpen} onClose={handleClose}>
@@ -132,15 +134,16 @@ const ProfileModal = ({ isOpen, onClose }) => {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit((data) => mutate(data))} noValidate className='flex flex-col gap-4'>
+                <form key={userData?.id} onSubmit={handleSubmit((data) => mutate(data))} noValidate className='flex flex-col gap-4'>
 
                     <div className='flex flex-col gap-3'>
                         <div className='flex flex-col gap-[5px]'>
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex relative flex-col gap-2'>
                                 <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Full Name</label>
                                 <input
                                     type='text'
-                                    placeholder={userData?.fullName}
+
+                                    disabled={!!userData?.fullName && !isEditingName}
                                     {...register('full_name', {
                                         required: 'Name is required',
                                         minLength: {
@@ -161,14 +164,15 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                             return true;
                                         }
                                     })}
-                                    className={`outline-none ${errors.full_name ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#F5F5F5] transition-all duration-500 border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
+                                    className={`outline-none ${errors.full_name ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#F5F5F5] transition-all duration-500 border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#ADADAD]`}
                                 />
+                                <Image onClick={() => setIsEditingName(prev => !prev )} className='absolute cursor-pointer top-9 right-[15px]' src={'/profile_text.svg'} alt={'visibility'} width={22} height={22}/>
                             </div>
                             {errors.full_name && <span className='text-[#F4161A] text-xs'>{errors.full_name.message}</span>}
                         </div>
 
                         <div className='flex flex-col gap-[5px]'>
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col relative gap-2'>
                                 <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Email</label>
                                 <input
                                     type='email'
@@ -178,6 +182,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                     disabled
                                     className='w-full bg-[#F5F5F5] transition-all duration-300 border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#ADADAD]'
                                 />
+                                <Image className='absolute top-9 right-[15px]' src={'/profile_done.svg'} alt={'visibility'} width={22} height={22}/>
                             </div>
                             {errors.email && <span className='text-[#F4161A] text-xs'>{errors.email.message}</span>}
                         </div>
@@ -185,7 +190,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                         <div className='flex gap-2 w-full'>
                             <div className='flex flex-col gap-1 w-[267px] shrink-0'>
                                 <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Mobile Number</label>
-                                <div className="relative flex items-center">
+                                <div className="relative flex relative items-center">
                                     <span className='absolute left-3 top-[17px] font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#D1D1D1]'>+995</span>
 
                                     <input
@@ -212,7 +217,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                                 return true;
                                             }
                                         })}
-                                        placeholder={userData?.mobileNumber || ''}
+
                                         onInput={(e) => {
                                             if (e.target.value.length > 9) {
                                                 e.target.value = e.target.value.slice(0, 9);
@@ -220,11 +225,12 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                         }}
                                         className={`outline-none duration-300 transition-all ${errors.mobile_number  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#FFFFFF]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[50px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
                                     />
+                                    <Image className='absolute top-3 right-[15px]' src={'/profile_done.svg'} alt={'visibility'} width={22} height={22}/>
                                 </div>
                                 {errors.mobile_number && <span className='text-[#F4161A] text-xs'>{errors.mobile_number.message}</span>}
                             </div>
 
-                            <div className='flex flex-col gap-1'>
+                            <div className='flex flex-col relative gap-1'>
                                 <label className={`font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D] ${errors.age ? 'text-[#F4161A]' : 'text-[#130E67]'}`}>Age</label>
                                 <input
                                     type='number'
@@ -248,14 +254,15 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                             message: 'Please enter a valid age'
                                         }
                                     })}
-                                    placeholder={userData?.age || ''}
+
                                     onInput={(e) => {
                                         if (e.target.value.length > 3) {
                                             e.target.value = e.target.value.slice(0, 3);
                                         }
                                     }}
-                                    className={`outline-none duration-300 transition-all ${errors.age  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#FFFFFF]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A]`}
+                                    className={`outline-none duration-300 transition-all ${errors.age  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:placeholder:text-[#F5F5F5] placeholder:text-[#8A8A8A] focus:text-[#3D3D3D] focus:border-[#8A8A8A]'} w-full bg-[#FFFFFF]  border-[1.5px] border-[#D1D1D1] rounded-lg pl-[13px] pr-[15px] py-3 font-["Inter"] font-medium text-[14px] leading-[150%] tracking-normal text-[#8A8A8A] appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]`}
                                 />
+                                <Image className='absolute top-[31px] right-[15px]' src={'/profile_dropdown.svg'} alt={'visibility'} width={22} height={22}/>
                                 {errors.age && <span className='text-[#F4161A] text-xs'>{errors.age.message}</span>}
                             </div>
                         </div>
@@ -269,7 +276,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                                 className={`w-full justify-center items-center transition-all duration-500 ease-out flex flex-col rounded-[8px] border-[1.5px] border-[#D1D1D1] border gap-[8px] py-[30px] cursor-pointer hover:bg-[#EEEDFC] hover:border-[#DDDBFA] focus:bg-[#DDDBFA] focus:border-[#B7B3F4] ${preview ? 'bg-[#EEEDFC] border-[#DDDBFA]' : 'bg-white'} transition-colors overflow-hidden relative min-h-[160px]`}
                             >
 
-                                {preview ? (
+                                {preview && avatarFile?.length > 0 ?(
                                     <div className="flex w-full px-[40px] items-center gap-[10px]">
                                         <div className="relative w-[54px] h-[54px] rounded-full overflow-hidden">
                                             <Image

@@ -44,7 +44,7 @@ const Enrollment = ({ courseId, course }) => {
         enabled: !!selectedScheduleId && !!selectedTimeSlotId,
     });
 
-    const session = sessionsData.find(s => s.id === selectedSessionTypeId);
+    const session = sessionsData.find(s => s.courseScheduleId === selectedSessionTypeId);
     const basePrice = parseFloat(course.basePrice || 0);
     const sessionUpgradePrice = session ? parseFloat(session.priceModifier || 0) : 0;
     const totalPrice = (basePrice + sessionUpgradePrice).toFixed(2);
@@ -247,7 +247,7 @@ const Enrollment = ({ courseId, course }) => {
                                     <button
                                         key={index}
                                         onClick={() => doReview(index)}
-                                        className="relative w-[32px] h-[32px]"
+                                        className="relative w-[32px] cursor-pointer h-[32px]"
                                     >
                                         <img
                                             src="/emptyStar_vector.svg"
