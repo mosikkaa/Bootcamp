@@ -12,10 +12,10 @@ const Footer = () => {
 
 
      return(
-       <footer className='w-full bg-[#F5F5F5]  flex border-t pt-[80px] px-[177px] pb-[20px] h-[334px] items-center justify-center border-[#D1D1D1]'>
-           <div className='w-full flex flex-col gap-[74px]'>
+       <footer className='w-full bg-[#F5F5F5] flex border-t pt-[48px] lg:pt-[80px] px-4 sm:px-8 md:px-12 lg:px-16 xl:px-[100px] 2xl:px-[177px] pb-[20px] items-center justify-center border-[#D1D1D1]'>
+           <div className='w-full flex flex-col gap-[48px] lg:gap-[74px]'>
 
-               <div className='flex justify-between'>
+               <div className='flex flex-col gap-8 md:flex-row md:justify-between'>
 
                    <div className='flex flex-col gap-6'>
 
@@ -25,19 +25,19 @@ const Footer = () => {
 
                    </div>
 
-                   <div className='flex gap-[120px]'>
+                   <div className='flex flex-wrap gap-10 sm:gap-[60px] lg:gap-[120px]'>
                        <FooterColumn head={'Explore'}>
-                           {isLoggedIn && <a onClick={openSidebar} className={'font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal cursor-default'}>Enrolled Courses</a>}
-                           <Link href={'/browse'} className={'font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal cursor-default'}>Browse Courses</Link>
+                           {isLoggedIn && <a onClick={openSidebar} className={'font-["Inter"] text-[#666666] font-normal text-[16px] lg:text-[18px] leading-none text-start tracking-normal cursor-default'}>Enrolled Courses</a>}
+                           <Link href={'/browse'} className={'font-["Inter"] text-[#666666] font-normal text-[16px] lg:text-[18px] leading-none text-start tracking-normal cursor-default'}>Browse Courses</Link>
                        </FooterColumn>
 
                        <FooterColumn head={'Account'}>
                            {isLoggedIn ?
-                               <a onClick={openProfile} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal cursor-default'>My Profile</a>
+                               <a onClick={openProfile} className='font-["Inter"] text-[#666666] font-normal text-[16px] lg:text-[18px] leading-none text-start tracking-normal cursor-default'>My Profile</a>
                                :
                                <>
-                                   <a onClick={openSignUp} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal cursor-default'>Sign Up</a>
-                                   <a onClick={openLogin} className='font-["Inter"] text-[#666666] font-normal text-[18px] leading-none text-start tracking-normal cursor-default'>Log In</a>
+                                   <a onClick={openSignUp} className='font-["Inter"] text-[#666666] font-normal text-[16px] lg:text-[18px] leading-none text-start tracking-normal cursor-default'>Sign Up</a>
+                                   <a onClick={openLogin} className='font-["Inter"] text-[#666666] font-normal text-[16px] lg:text-[18px] leading-none text-start tracking-normal cursor-default'>Log In</a>
                                </>
                            }
                        </FooterColumn>
@@ -47,9 +47,9 @@ const Footer = () => {
 
                </div>
 
-               <div className='flex justify-between'>
-                   <p className='font-["Inter"] font-normal text-[18px] leading-none tracking-normal text-[#666666]'>Copyright © 2026 Redberry International</p>
-                   <div className='flex gap-2 text-[#666666] font-["Inter"] font-normal text-[18px] leading-none tracking-normal'>All Rights Reserved
+               <div className='flex flex-col gap-2 sm:flex-row sm:justify-between'>
+                   <p className='font-["Inter"] font-normal text-[14px] lg:text-[18px] leading-none tracking-normal text-[#666666]'>Copyright © 2026 Redberry International</p>
+                   <div className='flex flex-wrap gap-2 text-[#666666] font-["Inter"] font-normal text-[14px] lg:text-[18px] leading-none tracking-normal'>All Rights Reserved
                        <div className='w-[0.8px] h-full bg-[#666666] text-[#666666]'/>
                        <Link href={'/'} className='text-[#4F46E5]'>Terms And Conditions</Link>
                        <div className='w-[0.8px] h-full bg-[#666666] text-[#666666]'/>

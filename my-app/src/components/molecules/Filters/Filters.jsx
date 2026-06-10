@@ -27,7 +27,7 @@ const Filters = () => {
     };
 
     return (
-        <div className='w-[309px] flex flex-col gap-6'>
+        <div className='w-full lg:w-[309px] flex flex-col gap-6'>
             <div className='flex flex-col gap-8'>
                 <div className='flex justify-between mt-1.5 items-center'>
                     <h1 className='font-["Inter"] font-semibold text-[40px] leading-none tracking-normal text-[#0A0A0A]'>Filter</h1>

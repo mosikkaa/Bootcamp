@@ -33,16 +33,16 @@ const CoursePage = ({ params }) => {
 
             <div className='flex flex-col gap-[32px]'>
                 <LocationV2 />
-                <h1 className='text-[#141414] font-inter font-semibold text-[40px] leading-none tracking-[0%]'>
+                <h1 className='text-[#141414] font-inter font-semibold text-[28px] lg:text-[40px] leading-none tracking-[0%]'>
                     {course.title}
                 </h1>
             </div>
 
-            <div className='w-full flex justify-between'>
+            <div className='w-full flex flex-col lg:flex-row justify-between gap-8 lg:gap-0'>
 
                 <CourseInformation course={course} courseId={course.id} />
 
-                <div className='w-[530px] flex flex-col gap-[11px]'>
+                <div className='w-full lg:w-[530px] flex flex-col gap-[11px]'>
                     <EnrollSection course={course} courseId={course.id} />
 
                     {(!isLoggedIn || userData?.profileComplete === false) && (<div className='rounded-[12px] mt-0.5 p-5 flex justify-between items-center border border-[#E5E7EB] bg-[#F8FAFC]'>
@@ -52,13 +52,13 @@ const CoursePage = ({ params }) => {
                                 <Image src={'/Icon_Set_Warning_Orange.svg'} alt={'Warning'} width={22} height={22}/>
                                 <h1 className='font-["Inter"] font-medium text-[16px] leading-[24px] text-[#292929]'>{!isLoggedIn ? 'Authentication Required' : 'Complete Your Profile'}</h1>
                             </div>
-                            <span className='w-[286px] text-[12px] leading-[15px] font-["Inter"] font-normal text-[#8A8A8A]'>
+                            <span className='w-full text-[12px] leading-[15px] font-["Inter"] font-normal text-[#8A8A8A]'>
                                 {!isLoggedIn ? 'You need sign in to your profile before enrolling in this course.' : 'You need to fill in your profile details before enrolling in this course.'}
                             </span>
 
                         </div>
 
-                        <button onClick={!isLoggedIn ? openLogin : openProfile} className='text-[14px] flex font-["Inter"] cursor-pointer leading-[26px] font-normal rounded-[8px] border border-[#B7B3F4] bg-[#EEEDFC] gap-1.5 py-[10px] px-3'>
+                        <button onClick={!isLoggedIn ? openLogin : openProfile} className='text-[14px] flex font-["Inter"] cursor-pointer leading-[26px] font-normal rounded-[8px] border border-[#B7B3F4] bg-[#EEEDFC] gap-1.5 py-[10px] px-3 shrink-0 ml-3'>
                             <span className='text-[#281ED2] text-[14px] flex font-["Inter"] leading-[26px] font-normal'>{!isLoggedIn ? 'Sign In' : 'Complete'}</span>
                             <Image src={'/Icon_Set_Right.svg'} alt={'Right'} width={16} height={16}/>
                         </button>

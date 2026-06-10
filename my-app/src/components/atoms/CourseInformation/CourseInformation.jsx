@@ -19,10 +19,10 @@ const CourseInformation = ({course,courseId}) => {
     const categoryIcon = CATEGORY_ICONS[course.category?.name];
 
      return(
-         <div className='w-[903px] flex flex-col gap-[18px]'>
+         <div className='w-full lg:w-[903px] flex flex-col gap-[18px]'>
 
              <div className='flex flex-col gap-[16px]'>
-                 <Image src={course.image} alt={course.title} height={474.15} width={903} className="rounded-lg h-[474.15px] w-[903px] object-cover"/>
+                 <Image src={course.image} alt={course.title} height={474} width={903} className="rounded-lg w-full h-auto lg:h-[474px] object-cover"/>
 
                  <div className='flex w-full justify-between'>
                      <div className='flex gap-3'>

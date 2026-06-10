@@ -6,7 +6,7 @@ import Button from "@/components/atoms/Button/Button";
 const BrowseCard = ({ course }) => {
     return (
         <Link href={`/courses/${course.id}`} className="block">
-            <div className='flex flex-col gap-[18px] justify-between w-[373px] h-[451px] transition-all duration-300 ease-out hover:border-[#B7B3F4] hover:shadow-[0px_0px_25px_0px_#8A82D41A] active:border-[#958FEF] active:shadow-[0px_0px_45px_0px_#8A82D426] bg-white rounded-[12px] p-[20px] border border-[#F5F5F5] cursor-pointer '>
+            <div className='flex flex-col gap-[18px] justify-between w-full min-h-[380px] lg:h-[451px] transition-all duration-300 ease-out hover:border-[#B7B3F4] hover:shadow-[0px_0px_25px_0px_#8A82D41A] active:border-[#958FEF] active:shadow-[0px_0px_45px_0px_#8A82D426] bg-white rounded-[12px] p-[20px] border border-[#F5F5F5] cursor-pointer '>
                 <div className='flex flex-col gap-[18px]'>
                 <Image
                     src={course.image || '/StartBGTry.svg'}

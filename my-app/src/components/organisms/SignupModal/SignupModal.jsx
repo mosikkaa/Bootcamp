@@ -168,7 +168,7 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
 
     return (
         <Modal isOpen={isOpen} onClose={handleClose}>
-            <div className='w-[460px] rounded-[12px] p-[50px] gap-[16px] flex flex-col bg-white'>
+            <div className='w-[calc(100vw-2rem)] max-w-[460px] rounded-[12px] p-6 sm:p-[50px] gap-[16px] flex flex-col bg-white'>
                 {active > 0 && (
                     <Image src={'/previous.svg'} alt={'previous'} height={32} width={16}
                            className="cursor-pointer absolute top-3 left-4"
@@ -183,7 +183,7 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
 
                     <div className='flex justify-between items-center'>
                         {steps.map((step) => (
-                            <div key={step.id} className={`w-[114.67px] h-2 rounded-[30px] ${getColor(steps.indexOf(step))}`} />
+                            <div key={step.id} className={`flex-1 h-2 rounded-[30px] ${getColor(steps.indexOf(step))}`} />
                         ))}
                     </div>
 
@@ -228,7 +228,7 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
                                                 onChange(e);
                                                 setAttemptedStep(null);
                                             }}
-                                            className={`w-[360px] h-[48px] border-[1.5px] border-solid ${((step.label === 'Password*') || (step.label === 'Confirm Password*')) && 'pr-[45px]'  } rounded-[8px] focus:placeholder:translate-x-[4px] transition-all duration-300 flex items-center gap-[10px] pt-[12px] pr-[15px] pb-[12px] pl-[13px] placeholder:text-[#8A8A8A] focus:placeholder:text-[#F5F5F5] font-["Inter"] font-medium text-[14px] leading-none tracking-normal align-middle text-[#3D3D3D] outline-none ${errors[step.field] && attemptedStep === active ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:border-[#8A8A8A]'}`}
+                                            className={`w-full h-[48px] border-[1.5px] border-solid ${((step.label === 'Password*') || (step.label === 'Confirm Password*')) && 'pr-[45px]'  } rounded-[8px] focus:placeholder:translate-x-[4px] transition-all duration-300 flex items-center gap-[10px] pt-[12px] pr-[15px] pb-[12px] pl-[13px] placeholder:text-[#8A8A8A] focus:placeholder:text-[#F5F5F5] font-["Inter"] font-medium text-[14px] leading-none tracking-normal align-middle text-[#3D3D3D] outline-none ${errors[step.field] && attemptedStep === active ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:border-[#8A8A8A]'}`}
                                         />
                                         {step.label === 'Password*' && (<Image onClick={() => setShowPassword(prev => ({...prev, [step.field]: !prev[step.field],}))} className='absolute cursor-pointer top-9 right-[15px]' src={'/login_eye.svg'} alt={'visibility'} width={22} height={22}/>)}
                                         {step.label === 'Confirm Password*' && (<Image onClick={() => setShowPassword(prev => ({...prev, [step.field]: !prev[step.field],}))} className='absolute cursor-pointer top-9 right-[15px]' src={'/eye_closed.svg'} alt={'visibility'} width={22} height={22}/>)}
@@ -326,7 +326,7 @@ const SignupModal = ({ isOpen, onClose, onLoginOpen }) => {
                         )}
 
                         <div className='flex items-center justify-center gap-3 w-full'>
-                            <div className='flex w-[320px] items-center gap-2'>
+                            <div className='flex w-full items-center gap-2'>
                                 <div className='flex-1 h-px bg-gray-200' />
                                 <span className='text-sm text-gray-400'>or</span>
                                 <div className='flex-1 h-px bg-gray-200' />

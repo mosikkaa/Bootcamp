@@ -58,11 +58,11 @@ const Slider = () => {
             loop={true}
             onSwiper={(swiper) => (swiperRef.current = swiper)}
             onRealIndexChange={(swiper) => setActiveIndex(swiper.realIndex)}
-            className='w-full h-[420px] rounded-[30px] relative'
+            className='w-full h-[200px] sm:h-[280px] md:h-[340px] lg:h-[420px] rounded-[20px] lg:rounded-[30px] relative'
         >
             {slides.map((slide) => (
                 <SwiperSlide key={slide.id}>
-                    <div className='w-full h-full p-12 flex '>
+                    <div className='w-full h-full p-5 sm:p-8 lg:p-12 flex '>
 
                         <Image
                             src={slide.bg}
@@ -76,10 +76,10 @@ const Slider = () => {
 
                         <div className='relative z-10 flex flex-col gap-10 w-full'>
                             <div className='flex flex-col gap-3'>
-                                <h1 className='text-white font-["Inter"] font-bold text-[48px] leading-none tracking-normal'>
+                                <h1 className='text-white font-["Inter"] font-bold text-[20px] sm:text-[28px] md:text-[36px] lg:text-[48px] leading-tight tracking-normal'>
                                     {slide.title}
                                 </h1>
-                                <p className='text-white/90 w-[1256px] font-["Inter"] font-light text-[24px] leading-none tracking-normal'>
+                                <p className='text-white/90 w-full max-w-[600px] font-["Inter"] font-light text-[13px] sm:text-[16px] lg:text-[24px] leading-snug tracking-normal'>
                                     {slide.description}
                                 </p>
                             </div>
@@ -92,14 +92,14 @@ const Slider = () => {
 
                 </SwiperSlide>
             ))}
-            <div className='absolute bottom-10 right-10 z-10 flex items-center gap-6'>
+            <div className='absolute bottom-4 lg:bottom-10 right-4 lg:right-10 z-10 flex items-center gap-3 lg:gap-6'>
                 <button className='cursor-pointer' onClick={() => isFirst ? null : swiperRef.current?.slidePrev()}>
                     <Image
                         src='/arrow-previous.svg'
                         alt='prev'
                         width={54}
                         height={54}
-                        className={isFirst ? 'opacity-40 grayscale' : 'opacity-100'}
+                        className={`w-[34px] h-[34px] lg:w-[54px] lg:h-[54px] ${isFirst ? 'opacity-40 grayscale' : 'opacity-100'}`}
                     />
                 </button>
                 <button className='cursor-pointer' onClick={() => isLast ? null : swiperRef.current?.slideNext()}>
@@ -108,7 +108,7 @@ const Slider = () => {
                         alt='next'
                         width={54}
                         height={54}
-                        className={isLast ? 'opacity-40 grayscale' : 'opacity-100'}
+                        className={`w-[34px] h-[34px] lg:w-[54px] lg:h-[54px] ${isLast ? 'opacity-40 grayscale' : 'opacity-100'}`}
                     />
                 </button>
             </div>

@@ -12,14 +12,25 @@ body {
     box-sizing: border-box;
 }
 .swiper-pagination-bullet {
-    height: 8px!important;
-    width: 57px!important;
+    height: 6px!important;
+    width: 30px!important;
     border-radius: 999px!important;
     background-color:#F5F5F5!important;
     opacity: 0.5;
 }
+@media (min-width: 1024px) {
+    .swiper-pagination-bullet {
+        height: 8px!important;
+        width: 57px!important;
+    }
+}
 .swiper-pagination{
-    margin-bottom: 48px!important;
+    margin-bottom: 16px!important;
+}
+@media (min-width: 1024px) {
+    .swiper-pagination{
+        margin-bottom: 48px!important;
+    }
 }
 .swiper-pagination-bullet-active {
     background-color: #F5F5F5!important;

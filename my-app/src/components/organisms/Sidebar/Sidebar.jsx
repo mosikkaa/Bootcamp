@@ -39,9 +39,9 @@ const Sidebar = () => {
 
             <div className='absolute inset-0 bg-black/30' onClick={closeSidebar} />
 
-            <div className='relative z-999 gap-[37px] w-[794px] pb-10 h-full items-center bg-[#F5F5F5] flex flex-col overflow-y-auto'>
+            <div className='relative z-999 gap-[37px] w-full sm:w-[500px] lg:w-[794px] pb-10 h-full items-center bg-[#F5F5F5] flex flex-col overflow-y-auto'>
 
-                <div className='flex gap-[202px] w-full pt-[42px] items-end justify-center'>
+                <div className='flex flex-col sm:flex-row gap-3 sm:gap-6 lg:gap-[202px] w-full pt-[42px] items-start sm:items-end px-4 sm:px-0 justify-center'>
                     <h2 className='font-["Inter"] font-semibold text-[40px] leading-[44px] tracking-[-0.005em] text-[#0A0A0A]'>Enrolled Courses</h2>
                     <span className='font-["Inter"] text-[16px] tracking-normal text-[#0A0A0A]'>
                         <span className='font-medium leading-[24px]'>Total Enrollments:</span>
@@ -51,14 +51,14 @@ const Sidebar = () => {
 
                 <div className={`flex flex-col items-center ${enrollments.length === 0 && 'justify-center h-[876px]'} gap-3`}>
                     {enrollments.map((enrollment) => (
-                        <Link href={`/courses/${enrollment?.course?.id}`} onClick={closeSidebar} key={enrollment.id} className='flex flex-col border-[0.5px] border-transparent hover:border-[0.5px] hover:border-[#B7B3F4] hover:shadow-[0px_0px_10px_0px_#8A82D440] active:border-[1px] active:border-[#958FEF] active:shadow-[0px_0px_35px_0px_#8A82D440] transition-all duration-300 bg-white gap-3 rounded-[12px] p-5 w-[623px]'>
+                        <Link href={`/courses/${enrollment?.course?.id}`} onClick={closeSidebar} key={enrollment.id} className='flex flex-col border-[0.5px] border-transparent hover:border-[0.5px] hover:border-[#B7B3F4] hover:shadow-[0px_0px_10px_0px_#8A82D440] active:border-[1px] active:border-[#958FEF] active:shadow-[0px_0px_35px_0px_#8A82D440] transition-all duration-300 bg-white gap-3 rounded-[12px] p-4 sm:p-5 w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] lg:w-[623px]'>
 
                             <div className='flex flex-col gap-4'>
 
                                 <div className='flex gap-[18px]'>
-                                    <Image src={enrollment.course?.image || '/StartBGTry.svg'} alt={enrollment.course?.title} width={269} height={191} className='rounded-[10px] object-cover w-[269px] h-[191px]'/>
+                                    <Image src={enrollment.course?.image || '/StartBGTry.svg'} alt={enrollment.course?.title} width={269} height={191} className='rounded-[10px] object-cover w-[120px] h-[90px] sm:w-[180px] sm:h-[130px] lg:w-[269px] lg:h-[191px] shrink-0'/>
 
-                                    <div className='flex flex-col items-start gap-2 w-[296px]'>
+                                    <div className='flex flex-col items-start gap-2 flex-1 min-w-0'>
 
                                         <div className='flex justify-between items-center h-[18px] w-full'>
                                             <span className='flex gap-1 font-["Inter"] font-medium text-[14px] leading-none tracking-normal'>

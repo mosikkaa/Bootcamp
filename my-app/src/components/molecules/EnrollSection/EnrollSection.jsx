@@ -167,7 +167,7 @@ const Enrollment = ({ courseId, course }) => {
         <div className='flex flex-col rounded-[12px] gap-[39px]'>
 
             {isEnrolled ? (
-                <div className='flex flex-col gap-[48px] w-[473px] rounded-[12px] border border-[#F5F5F5]'>
+                <div className='flex flex-col gap-[48px] w-full rounded-[12px] border border-[#F5F5F5]'>
 
                     <div className='flex flex-col gap-[22px]'>
                         <div>
@@ -231,7 +231,7 @@ const Enrollment = ({ courseId, course }) => {
                     </div>
 
                     {(isCompleted && showRating && !course.isRated) && (
-                        <div className='relative w-[473px] items-center h-[172px] flex flex-col gap-[18px] rounded-[8px] px-[50px] py-[40px] bg-white'>
+                        <div className='relative w-full items-center flex flex-col gap-[18px] rounded-[8px] px-[20px] sm:px-[50px] py-[40px] bg-white'>
                             <Image
                                 className={'absolute right-3 top-3 cursor-pointer'}
                                 src={'/close.svg'}
@@ -316,7 +316,7 @@ const Enrollment = ({ courseId, course }) => {
                         }}
                     />
 
-                    <div className='w-[530px] h-[306px] flex flex-col gap-[32px] rounded-[12px] p-[40px] border border-[#F5F5F5] bg-white'>
+                    <div className='w-full flex flex-col gap-[32px] rounded-[12px] p-[20px] sm:p-[40px] border border-[#F5F5F5] bg-white'>
                         <div className='flex flex-col gap-[32px]'>
                             <div className='flex justify-between items-center'>
                                 <span className='font-["Inter"] font-semibold text-[20px] leading-[24px] tracking-normal text-[#8A8A8A]'>Total Price</span>

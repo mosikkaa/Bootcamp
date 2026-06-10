@@ -46,7 +46,7 @@ const LoginModal = ({ isOpen, onClose, onSignUpOpen }) => {
 
     return (
         <Modal isOpen={isOpen} onClose={handleClose}>
-            <div className='w-[460px] rounded-[12px] p-[50px] gap-[16px] flex flex-col bg-white'>
+            <div className='w-[calc(100vw-2rem)] max-w-[460px] rounded-[12px] p-6 sm:p-[50px] gap-[16px] flex flex-col bg-white'>
                 <div className='flex flex-col gap-[24px]'>
 
                     <div className='flex flex-col gap-1.5 items-center'>
@@ -66,7 +66,7 @@ const LoginModal = ({ isOpen, onClose, onSignUpOpen }) => {
                                         required: 'Email is required',
                                         pattern: { value: /^\S+@\S+\.\S+$/, message: 'Invalid email' }
                                     })}
-                                    className={`w-[360px] h-[48px] border-[1.5px] border-solid rounded-[8px] focus:placeholder:translate-x-[4px] transition-all duration-300 flex items-center gap-[10px] pt-[12px] pr-[15px] pb-[12px] pl-[13px] placeholder:text-[#8A8A8A] focus:placeholder:text-[#F5F5F5] font-["Inter"] font-medium text-[14px] leading-none tracking-normal align-middle text-[#3D3D3D] outline-none ${errors.email  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:border-[#8A8A8A]'}`}
+                                    className={`w-full h-[48px] border-[1.5px] border-solid rounded-[8px] focus:placeholder:translate-x-[4px] transition-all duration-300 flex items-center gap-[10px] pt-[12px] pr-[15px] pb-[12px] pl-[13px] placeholder:text-[#8A8A8A] focus:placeholder:text-[#F5F5F5] font-["Inter"] font-medium text-[14px] leading-none tracking-normal align-middle text-[#3D3D3D] outline-none ${errors.email  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:border-[#8A8A8A]'}`}
                                 />
                             </div>
                             {errors.email && (
@@ -85,7 +85,7 @@ const LoginModal = ({ isOpen, onClose, onSignUpOpen }) => {
                                     required: 'Password is required',
                                     minLength: { value: 6, message: 'Min 6 characters' }
                                 })}
-                                className={`w-[360px] h-[48px] border-[1.5px] border-solid rounded-[8px] focus:placeholder:translate-x-[4px] transition-all duration-300 flex items-center gap-[10px] pt-[12px] pr-[45px] pb-[12px] pl-[13px] placeholder:text-[#8A8A8A] focus:placeholder:text-[#F5F5F5] font-["Inter"] font-medium text-[14px] leading-none tracking-normal align-middle text-[#3D3D3D] outline-none ${errors.password  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:border-[#8A8A8A]'}`}
+                                className={`w-full h-[48px] border-[1.5px] border-solid rounded-[8px] focus:placeholder:translate-x-[4px] transition-all duration-300 flex items-center gap-[10px] pt-[12px] pr-[45px] pb-[12px] pl-[13px] placeholder:text-[#8A8A8A] focus:placeholder:text-[#F5F5F5] font-["Inter"] font-medium text-[14px] leading-none tracking-normal align-middle text-[#3D3D3D] outline-none ${errors.password  ? 'border-[#F4161A] text-[#F4161A] placeholder:text-[#F4161A]' : 'hover:border-[#ADADAD] border-[#D1D1D1] hover:placeholder:text-[#D1D1D1] focus:border-[#8A8A8A]'}`}
                             />
                             <Image onClick={() => setShowPassword(prev => !prev)} className='absolute cursor-pointer top-9 right-[15px]' src={'/login_eye.svg'} alt={'visibility'} width={22} height={22}/>
                             {errors.password && (
@@ -111,7 +111,7 @@ const LoginModal = ({ isOpen, onClose, onSignUpOpen }) => {
                         </Button>
 
                         <div className='flex items-center justify-center gap-3 w-full'>
-                            <div className='flex w-[320px] items-center gap-2'>
+                            <div className='flex w-full items-center gap-2'>
                                 <div className='flex-1 h-px bg-[#D1D1D1]' />
                                 <span className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal text-[#8A8A8A]'>or</span>
                                 <div className='flex-1 h-px bg-[#D1D1D1]' />

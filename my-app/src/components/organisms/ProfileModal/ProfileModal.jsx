@@ -89,7 +89,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
     return (
         <Modal isOpen={isOpen} onClose={handleClose}>
-            <div className='w-[460px] rounded-[12px] p-[50px] flex flex-col gap-[24px] bg-white'>
+            <div className='w-[calc(100vw-2rem)] max-w-[460px] rounded-[12px] p-6 sm:p-[50px] flex flex-col gap-[24px] bg-white overflow-y-auto max-h-[90vh]'>
 
                 <div className='flex flex-col gap-1.5 items-center'>
                     <h1 className='font-["Inter"] font-semibold text-[32px] leading-[100%] tracking-normal text-center text-[#141414]'>Profile</h1>
@@ -188,7 +188,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                         </div>
 
                         <div className='flex gap-2 w-full'>
-                            <div className='flex flex-col gap-1 w-[267px] shrink-0'>
+                            <div className='flex flex-col gap-1 flex-1 min-w-0'>
                                 <label className='font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#3D3D3D]'>Mobile Number</label>
                                 <div className="relative flex relative items-center">
                                     <span className='absolute left-3 top-[17px] font-["Inter"] font-medium text-[14px] leading-[100%] tracking-normal align-middle text-[#D1D1D1]'>+995</span>
