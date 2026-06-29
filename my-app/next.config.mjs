@@ -4,10 +4,9 @@ const nextConfig = {
   reactCompiler: true,
     images: {
         remotePatterns: [
-            {
-                protocol: "https",
-                hostname: "api.redclass.redberryinternship.ge",
-            },
+            { protocol: 'https', hostname: 'i.pravatar.cc' },
+            { protocol: 'https', hostname: 'picsum.photos' },
+            { protocol: 'http', hostname: 'localhost', port: '8000' }, // your API-served images
         ],
     },
 };
