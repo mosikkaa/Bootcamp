@@ -79,7 +79,7 @@ const Slider = () => {
                                 <h1 className='text-white font-["Inter"] font-bold text-[20px] sm:text-[28px] md:text-[36px] lg:text-[48px] leading-tight tracking-normal'>
                                     {slide.title}
                                 </h1>
-                                <p className='text-white/90 w-full max-w-[600px] font-["Inter"] font-light text-[13px] sm:text-[16px] lg:text-[24px] leading-snug tracking-normal'>
+                                <p className='text-white/90 w-full max-w-[950px] font-["Inter"] font-light text-[13px] sm:text-[16px] lg:text-[24px] leading-snug tracking-normal'>
                                     {slide.description}
                                 </p>
                             </div>
